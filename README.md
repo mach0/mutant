@@ -1,5 +1,7 @@
-valuetool
-=========
+mutant
+======
+
+A MUlti Temporal ANalysis Tool for Rasterdata!
 
 This is a fork from the original valuetool which I am going to extend with new features during working on my masterthesis called "Analysing multitemporal rasterdata with QGIS".
 
