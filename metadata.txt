@@ -1,0 +1,23 @@
+[general]
+name=Mutant
+qgisMinimumVersion=2.0
+about=Display raster layer values at current mouse position
+description=Display in a table or plot the values from the visible raster
+	layers at the current mouse position
+category=Raster
+version=version 0.1.0
+author='Werner Macho'
+email=werner.macho@gmail.com
+; other authors include :   Ghislain Picard, Richard Duivenvoorde,
+;                           Ricardo Silva, Etienne Tourigny, Radim Blazek
+; optional metadata entries
+changelog=
+    0.1.0 : initial release based on Valuetool 0.8.5
+
+tags=raster
+homepage=http://hub.qgis.org/projects/mutant
+tracker=http://hub.qgis.org/projects/mutant/issues
+repository=https://github.com/mach0/mutant
+icon=img/icon.png
+experimental=False
+deprecated=False
