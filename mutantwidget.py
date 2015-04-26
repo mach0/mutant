@@ -55,7 +55,7 @@ try:
     import matplotlib.ticker as ticker
     import matplotlib.dates as dates
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-    from mpl_cust import MplSettings
+    from cust.mpl_cust import MplSettings
     has_mpl = StrictVersion(matplotlib.__version__) >= StrictVersion('1.0.0')
 except ImportError:
     has_mpl = False
@@ -63,7 +63,7 @@ except ImportError:
 has_pyqtgraph = True
 try:
     import pyqtgraph as pg
-    from pqg_cust import DateTimeViewBox, DateTimeAxis
+    from cust.pqg_cust import DateTimeViewBox, DateTimeAxis
     has_pyqtgraph = StrictVersion(pg.__version__) >= StrictVersion(
         '0.9.8')
 except ImportError:
@@ -145,6 +145,10 @@ class MutantWidget(QWidget, Ui_Widget):
                         SIGNAL("toggled ( bool )"),
                         self.y_auto_toggle)
         self.exportPushButton.clicked.connect(self.export_values)
+
+        # FIXME Connect change in Layerlist to errorsearchfunction (create -
+        # from 377 on) if useable (rasterlayer ...) do plot otherwise
+        # errormessage
 
         self.setupUi_plot()
 
@@ -387,6 +391,7 @@ class MutantWidget(QWidget, Ui_Widget):
         if debug > 0:
             print("%d active rasters, %d canvas layers" % (len(
                 self.activeRasterLayers()), self.canvas.layerCount()))
+
         layers = self.activeRasterLayers()
 
         if len(layers) == 0:

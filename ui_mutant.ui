@@ -43,7 +43,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabTable">
       <attribute name="title">
@@ -473,7 +473,8 @@ PyQtGraph (fast but lacking some features)</string>
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Extract time from (highest priority on top):</string>
+          <string>Extract time from (highest priority on top):
+Drag &amp; Drop Fields</string>
          </property>
         </widget>
        </item>
@@ -481,6 +482,12 @@ PyQtGraph (fast but lacking some features)</string>
         <widget class="QListWidget" name="extractionPriorityListWidget">
          <property name="enabled">
           <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string extracomment="Priority order with drag &amp; drop. Top first!"/>
+         </property>
+         <property name="whatsThis">
+          <string extracomment="Drag and Drop for priority. Topmost counts first."/>
          </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::InternalMove</enum>
@@ -490,7 +497,7 @@ PyQtGraph (fast but lacking some features)</string>
          </property>
          <item>
           <property name="text">
-           <string>XML</string>
+           <string>Filename</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -498,7 +505,7 @@ PyQtGraph (fast but lacking some features)</string>
          </item>
          <item>
           <property name="text">
-           <string>Filename</string>
+           <string>XML</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -594,7 +601,7 @@ PyQtGraph (fast but lacking some features)</string>
           <string>Write time to metadata (XML)</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>

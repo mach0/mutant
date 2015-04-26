@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mutant.ui'
 #
-# Created: Sun Jan 11 21:37:33 2015
+# Created: Thu Apr 16 22:06:03 2015
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -222,6 +222,8 @@ class Ui_Mutant(object):
         self.formLayout.setWidget(1, QtGui.QFormLayout.SpanningRole, self.priorityLabel)
         self.extractionPriorityListWidget = QtGui.QListWidget(self.tabMulti)
         self.extractionPriorityListWidget.setEnabled(False)
+        self.extractionPriorityListWidget.setToolTip(_fromUtf8(""))
+        self.extractionPriorityListWidget.setWhatsThis(_fromUtf8(""))
         self.extractionPriorityListWidget.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
         self.extractionPriorityListWidget.setDefaultDropAction(QtCore.Qt.MoveAction)
         self.extractionPriorityListWidget.setObjectName(_fromUtf8("extractionPriorityListWidget"))
@@ -264,7 +266,7 @@ class Ui_Mutant(object):
         self.formLayout.setWidget(6, QtGui.QFormLayout.FieldRole, self.patternLineEdit)
         self.writeMetaDataCheckBox = QtGui.QCheckBox(self.tabMulti)
         self.writeMetaDataCheckBox.setEnabled(False)
-        self.writeMetaDataCheckBox.setChecked(True)
+        self.writeMetaDataCheckBox.setChecked(False)
         self.writeMetaDataCheckBox.setObjectName(_fromUtf8("writeMetaDataCheckBox"))
         self.formLayout.setWidget(7, QtGui.QFormLayout.SpanningRole, self.writeMetaDataCheckBox)
         self.tabWidget.addTab(self.tabMulti, _fromUtf8(""))
@@ -277,7 +279,7 @@ class Ui_Mutant(object):
         self.gridLayout.addItem(spacerItem3, 0, 1, 1, 1)
 
         self.retranslateUi(Mutant)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.stackedWidget.setCurrentIndex(-1)
         QtCore.QObject.connect(self.toggleMutant, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.toggleFilter.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(Mutant)
@@ -353,13 +355,14 @@ class Ui_Mutant(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), _translate("Mutant", "Options", None))
         self.enableMTAnalysesCheckBox.setToolTip(_translate("Mutant", "If you enable this Option your data will be reorder chronologically and points with no data will be omitted in the graph.", None))
         self.enableMTAnalysesCheckBox.setText(_translate("Mutant", "Enable multi-temporal analysis", None))
-        self.priorityLabel.setText(_translate("Mutant", "Extract time from (highest priority on top):", None))
+        self.priorityLabel.setText(_translate("Mutant", "Extract time from (highest priority on top):\n"
+"Drag & Drop Fields", None))
         __sortingEnabled = self.extractionPriorityListWidget.isSortingEnabled()
         self.extractionPriorityListWidget.setSortingEnabled(False)
         item = self.extractionPriorityListWidget.item(0)
-        item.setText(_translate("Mutant", "XML", None))
-        item = self.extractionPriorityListWidget.item(1)
         item.setText(_translate("Mutant", "Filename", None))
+        item = self.extractionPriorityListWidget.item(1)
+        item.setText(_translate("Mutant", "XML", None))
         item = self.extractionPriorityListWidget.item(2)
         item.setText(_translate("Mutant", "Exif", None))
         item = self.extractionPriorityListWidget.item(3)
