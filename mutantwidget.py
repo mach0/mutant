@@ -145,25 +145,41 @@ class MutantWidget(QWidget, Ui_Widget):
         QObject.connect(self.yAutoCheckBox,
                         SIGNAL("toggled ( bool )"),
                         self.y_auto_toggle)
+
+        QObject.connect(self.toggleMutant,
+                        SIGNAL("toggled ( bool )"),
+                        self.catch_errors)
+
         self.exportPushButton.clicked.connect(self.export_values)
 
+        self.registry = QgsMapLayerRegistry.instance()
+        QObject.connect(self.registry,
+                        SIGNAL("layersAdded(QList< QgsMapLayer * >)"),
+                        self.catch_errors)
+        QObject.connect(self.registry,
+                        SIGNAL("layersRemoved(QStringList)"),
+                        self.catch_errors)
         # FIXME Connect change in Layerlist to errorsearchfunction (create -
         # from 377 on) if useable (rasterlayer ...) do plot otherwise
         # errormessage
-
         self.setupUi_plot()
 
-    def catcherrors(self):
-        layers = self.activeRasterLayers()
-        if len(layers) == 0:
-            if self.canvas.layerCount() > 0:
-                text = self.tr("Mutant: No valid layers to display - "
-                               "add Rasterlayers")
-                self.pop_messagebar(text)
+    def catch_errors(self):
+        if self.toggleMutant.isChecked():
+            layers = self.activeRasterLayers()
+            if len(layers) == 0:
+                if self.canvas.layerCount() > 0:
+                    text = self.tr("Mutant: No valid layers to display - "
+                                   "add Rasterlayers")
+                    self.pop_messagebar(text)
+                else:
+                    text = self.tr("Mutant: No valid layers to display")
+                    self.pop_messagebar(text)
+                self.values = []
+                return
             else:
-                text = self.tr("Mutant: No valid layers to display")
-                self.pop_messagebar(text)
-            self.values = []
+                return
+        else:
             return
 
     def y_auto_toggle(self, state):
@@ -177,13 +193,12 @@ class MutantWidget(QWidget, Ui_Widget):
             self.leYMin.setEnabled(True)
             self.leYMax.setEnabled(True)
 
-    def pop_messagebar(self, text, dtime=5):
-        if dtime == 0:
-            self.iface.messageBar().pushWidget(self.iface.messageBar(
-            ).createMessage(text), QgsMessageBar.WARNING)
+    def pop_messagebar(self, text, d_time=5):
+        # bar = self.iface.messageBar()
+        if d_time == 0:
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), QgsMessageBar.WARNING)
         else:
-            self.iface.messageBar().pushWidget(self.iface.messageBar(
-            ).createMessage(text), QgsMessageBar.WARNING, dtime)
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), QgsMessageBar.WARNING, d_time)
 
     def setupUi_plot(self):
         # plot
@@ -278,13 +293,12 @@ class MutantWidget(QWidget, Ui_Widget):
             self.plotLibSelector.setCurrentIndex(0)
             self.change_plot()
         else:  # can only be 0 if nothing else matched
-            message_text = "Valuetool cannot find any graphicslibrary for " \
+            message_text = "Mutant cannot find any graphicslibrary for " \
                            "creating Graph. Please install either Qwt >= 5.0 " \
                            "or matplotlib >= 1.0 or PyQtGraph >= 0.9.8!"
             self.plot_message = QtGui.QLabel(message_text)
             self.plot_message.setWordWrap(True)
             self.stackedWidget.addWidget(self.plot_message)
-
             self.pop_messagebar(message_text)
 
     def change_plot(self):
@@ -325,6 +339,9 @@ class MutantWidget(QWidget, Ui_Widget):
             QObject.connect(self.canvas,
                             SIGNAL("layersChanged ()"),
                             self.invalidatePlot)
+            QObject.connect(self.canvas,
+                            SIGNAL("layersChanged ()"),
+                            self.catch_errors)
             if not self.plotOnMove.isChecked():
                 QObject.connect(self.canvas,
                                 SIGNAL("xyCoordinates(const QgsPoint &)"),
@@ -342,7 +359,8 @@ class MutantWidget(QWidget, Ui_Widget):
             self.tabWidget.setEnabled(active)
             if active:
                 self.labelStatus.setText(self.tr("Mutant is enabled!"))
-                if self.tabWidget.currentIndex() == 2:  # FIXME: WHY only on 2?
+                # FIXME: Only on Options Tab?
+                if self.tabWidget.currentIndex() == 2:
                     self.update_layers()
             else:
                 self.labelStatus.setText(self.tr(""))
