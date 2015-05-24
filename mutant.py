@@ -40,7 +40,8 @@ class Mutant:
     def initGui(self):
         # add action to toolbar
         self.action = QAction(QIcon(":/plugins/mutant/img/icon.png"),
-                              "Mutant", self.iface.mainWindow())
+                              "Mutant",
+                              self.iface.mainWindow())
         self.iface.addToolBarIcon(self.action)
         self.tool = MutantMap(self.canvas, self.action)
         self.saveTool = None
@@ -77,9 +78,9 @@ class Mutant:
                              self.mutantwidget.plotOnMove.isChecked())
         self.mutantdockwidget.close()
         self.deactivateTool()
-        # remove the dockwidget from iface
+        # remove dockwidget from iface
         self.iface.removeDockWidget(self.mutantdockwidget)
-        # remove the plugin menu item and icon
+        # remove plugin menu item and icon
         # self.iface.removePluginMenu("Analyses",self.action)
         self.iface.removeToolBarIcon(self.action)
 

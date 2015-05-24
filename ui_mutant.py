@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_mutant.ui'
 #
-# Created: Thu Apr 16 22:06:03 2015
-#      by: PyQt4 UI code generator 4.10.3
+# Created: Sun May 24 11:18:17 2015
+#      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Mutant(object):
     def setupUi(self, Mutant):
         Mutant.setObjectName(_fromUtf8("Mutant"))
-        Mutant.resize(322, 411)
+        Mutant.resize(346, 415)
         self.gridLayout = QtGui.QGridLayout(Mutant)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.toggleMutant = QtGui.QCheckBox(Mutant)
@@ -279,7 +279,7 @@ class Ui_Mutant(object):
         self.gridLayout.addItem(spacerItem3, 0, 1, 1, 1)
 
         self.retranslateUi(Mutant)
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(2)
         self.stackedWidget.setCurrentIndex(-1)
         QtCore.QObject.connect(self.toggleMutant, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.toggleFilter.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(Mutant)
@@ -290,9 +290,9 @@ class Ui_Mutant(object):
         self.toggleMutant.setText(_translate("Mutant", "Enable", None))
         self.toggleFilter.setToolTip(_translate("Mutant", "proof of concept - to be extended", None))
         self.toggleFilter.setText(_translate("Mutant", "Enable Filtering", None))
-        self.cbxDigits.setToolTip(_translate("Mutant", "Specify how many digits to show in table", None))
+        self.cbxDigits.setToolTip(_translate("Mutant", "Specify how many decimals to show in table", None))
         self.cbxDigits.setText(_translate("Mutant", "Decimals", None))
-        self.exportPushButton.setToolTip(_translate("Mutant", "Export values from table to csv", None))
+        self.exportPushButton.setToolTip(_translate("Mutant", "Export values from table to CSV", None))
         self.exportPushButton.setText(_translate("Mutant", "Export to CSV", None))
         self.valueTable.setSortingEnabled(True)
         item = self.valueTable.horizontalHeaderItem(0)
@@ -353,7 +353,7 @@ class Ui_Mutant(object):
         item = self.selectionTable.horizontalHeaderItem(3)
         item.setText(_translate("Mutant", "Bands", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOptions), _translate("Mutant", "Options", None))
-        self.enableMTAnalysesCheckBox.setToolTip(_translate("Mutant", "If you enable this Option your data will be reorder chronologically and points with no data will be omitted in the graph.", None))
+        self.enableMTAnalysesCheckBox.setToolTip(_translate("Mutant", "<html><head/><body><p>Data will be reordered chronologically and points with no data will be omitted in the graph.</p></body></html>", None))
         self.enableMTAnalysesCheckBox.setText(_translate("Mutant", "Enable multi-temporal analysis", None))
         self.priorityLabel.setText(_translate("Mutant", "Extract time from (highest priority on top):\n"
 "Drag & Drop Fields", None))

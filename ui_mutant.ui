@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>411</height>
+    <width>346</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tabTable">
       <attribute name="title">
@@ -56,7 +56,7 @@
           <item>
            <widget class="QCheckBox" name="cbxDigits">
             <property name="toolTip">
-             <string>Specify how many digits to show in table</string>
+             <string>Specify how many decimals to show in table</string>
             </property>
             <property name="text">
              <string>Decimals</string>
@@ -95,7 +95,7 @@
           <item>
            <widget class="QPushButton" name="exportPushButton">
             <property name="toolTip">
-             <string>Export values from table to csv</string>
+             <string>Export values from table to CSV</string>
             </property>
             <property name="text">
              <string>Export to CSV</string>
@@ -460,7 +460,7 @@ PyQtGraph (fast but lacking some features)</string>
        <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="enableMTAnalysesCheckBox">
          <property name="toolTip">
-          <string>If you enable this Option your data will be reorder chronologically and points with no data will be omitted in the graph.</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Data will be reordered chronologically and points with no data will be omitted in the graph.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Enable multi-temporal analysis</string>

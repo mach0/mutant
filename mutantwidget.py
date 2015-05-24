@@ -108,7 +108,8 @@ class MutantWidget(QWidget, Ui_Widget):
 
         self.tracker = TimeTracker(self, self.canvas)
         self.filter = ApplyFilter(self, self.canvas)
-        self.mpl_cust = MplSettings(self, self.canvas)
+        if has_mpl:
+            self.mpl_cust = MplSettings(self, self.canvas)
 
         # self.setupUi_plot()
         # don't setup plot until Graph(1) tab is clicked - workaround for bug
@@ -152,6 +153,19 @@ class MutantWidget(QWidget, Ui_Widget):
 
         self.setupUi_plot()
 
+    def catcherrors(self):
+        layers = self.activeRasterLayers()
+        if len(layers) == 0:
+            if self.canvas.layerCount() > 0:
+                text = self.tr("Mutant: No valid layers to display - "
+                               "add Rasterlayers")
+                self.pop_messagebar(text)
+            else:
+                text = self.tr("Mutant: No valid layers to display")
+                self.pop_messagebar(text)
+            self.values = []
+            return
+
     def y_auto_toggle(self, state):
         # User has toggled automatic (default) y min/max values
         if state == 1:
@@ -163,9 +177,13 @@ class MutantWidget(QWidget, Ui_Widget):
             self.leYMin.setEnabled(True)
             self.leYMax.setEnabled(True)
 
-    def pop_messagebar(self, text):
+    def pop_messagebar(self, text, dtime=5):
+        if dtime == 0:
             self.iface.messageBar().pushWidget(self.iface.messageBar(
-            ).createMessage(text), QgsMessageBar.WARNING, 5)
+            ).createMessage(text), QgsMessageBar.WARNING)
+        else:
+            self.iface.messageBar().pushWidget(self.iface.messageBar(
+            ).createMessage(text), QgsMessageBar.WARNING, dtime)
 
     def setupUi_plot(self):
         # plot
@@ -394,17 +412,6 @@ class MutantWidget(QWidget, Ui_Widget):
 
         layers = self.activeRasterLayers()
 
-        if len(layers) == 0:
-            if self.canvas.layerCount() > 0:
-                text = self.tr("Mutant: No valid layers to display - "
-                               "add Rasterlayers")
-                self.pop_messagebar(text)
-            else:
-                text = self.tr("Mutant: No valid layers to display")
-                self.pop_messagebar(text)
-            self.values = []
-            return
-
         self.labelStatus.setText(self.tr('Coordinate:') + ' (%f, %f)' % (
             position.x(), position.y()))
 
@@ -460,7 +467,7 @@ class MutantWidget(QWidget, Ui_Widget):
                     # ignore transformation errors
                     continue
 
-            if True:  # for QGIS >= 1.9
+            if True:
                 if not layer.dataProvider():
                     continue
                 ident = None
@@ -489,7 +496,10 @@ class MutantWidget(QWidget, Ui_Widget):
                         extent = canvas.mapRenderer().mapToLayerCoordinates(
                             layer, extent)
                         ident = layer.dataProvider().identify(pos,
-                                                              QgsRaster.IdentifyFormatValue, canvas.extent(), width, height).results()
+                                                              QgsRaster.IdentifyFormatValue,
+                                                              canvas.extent(),
+                                                              width,
+                                                              height).results()
                     if not len(ident) > 0:
                         continue
 
@@ -506,7 +516,7 @@ class MutantWidget(QWidget, Ui_Widget):
                     if ident is not None and len(ident) > 1:
                         layer_name_with_band += ' ' + layer.bandName(iband)
 
-                    if not ident or not ident.has_key(iband):  #should not happen
+                    if not ident or not ident.has_key(iband):
                         bandvalue = "?"
                     else:
                         bandvalue = ident[iband]
@@ -559,10 +569,11 @@ class MutantWidget(QWidget, Ui_Widget):
 
     def showValues(self):
         if self.tabWidget.currentIndex() == 1:
-            #if len(self.values) == 0:
-            #    # FIXME don't plot if there is no data to plot...
-            #    return
-            self.plot()
+            if len(self.values) == 0:
+                # FIXME don't plot if there is no data to plot...
+                return
+            else:
+                self.plot()
         else:
             self.printInTable()
 
@@ -746,14 +757,6 @@ class MutantWidget(QWidget, Ui_Widget):
                     data_values.append(float(value))
                 except ValueError:
                     data_values.append(None)
-                    # Use None with matplotlib to ignore NoData values
-                    # if self.hasmpl and (self.plotLibSelector.currentText() ==
-                    #                     'matplotlib'):
-                    #     data_values.append(None)
-                    # else:
-                    #    data_values.append(0)
-                    # TODO Investigate for Qwt plot
-                    # appending None
                     # instead to not be plotted, be aware of min()
                     # calculation in plotting range = affects graphs (check
                     # there?
@@ -775,19 +778,19 @@ class MutantWidget(QWidget, Ui_Widget):
 
         # Qwt Plot
         if self.hasqwt and (self.plotLibSelector.currentText() == 'Qwt'):
-            if self.mt_enabled:
-                message = 'Mutant: We currently do not support Date ' \
-                          'values when using Qwt as plot library'
-                self.pop_messagebar(message)
-            else:
-                self.qwtPlot.setAxisMaxMinor(QwtPlot.xBottom, 0)
-                # self.qwtPlot.setAxisMaxMajor(QwtPlot.xBottom,0)
-                self.qwtPlot.setAxisScale(QwtPlot.xBottom, 1, len(self.values))
-                # self.qwtPlot.setAxisScale(QwtPlot.yLeft, self.ymin, self.ymax)
-                self.qwtPlot.setAxisScale(QwtPlot.yLeft, ymin, ymax)
-                self.curve.setData(range(1, len(data_values)+1), data_values)
-                self.qwtPlot.replot()
-                self.qwtPlot.setVisible(len(data_values) > 0)
+            self.qwtPlot.setAxisMaxMinor(QwtPlot.xBottom, 0)
+            # self.qwtPlot.setAxisMaxMajor(QwtPlot.xBottom,0)
+            self.qwtPlot.setAxisScale(QwtPlot.xBottom, 1, len(self.values))
+            # self.qwtPlot.setAxisScale(QwtPlot.yLeft, self.ymin, self.ymax)
+            self.qwtPlot.setAxisScale(QwtPlot.yLeft, ymin, ymax)
+            # TODO: Create Function for catching None Data values with above
+            try:
+                qwtx, qwtydata = zip(*filter(lambda x: x[1] is not None, zip(x_values, data_values)))
+            except ValueError:
+                return
+            self.curve.setData(range(1, len(qwtydata)+1), qwtydata)
+            self.qwtPlot.replot()
+            self.qwtPlot.setVisible(len(qwtydata) > 0)
 
         # matplotlib Plot
         elif self.hasmpl and (self.plotLibSelector.currentText() ==
@@ -873,7 +876,6 @@ class MutantWidget(QWidget, Ui_Widget):
                                                        width=1,
                                                        style=style_filter))
 
-
     def invalidatePlot(self, replot=True):
         if self.tabWidget.currentIndex() == 2:
             self.update_layers()
@@ -900,6 +902,10 @@ class MutantWidget(QWidget, Ui_Widget):
             self.mt_enabled = True
             if self.haspqg:
                 self.pqg_axis.set_time_enabled(True)
+            if self.hasqwt:
+                message = 'Mutant: There is currently no support using Date ' \
+                          'values while using the Qwt plotlibrary'
+                self.pop_messagebar(message, 0)
             self.tracker.enable_selection()
             self.priorityLabel.setEnabled(True)
             self.extractionPriorityListWidget.setEnabled(True)

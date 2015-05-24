@@ -17,14 +17,14 @@ __copyright__ = 'Copyright 2014, Werner Macho'
 
 
 class ApplyFilter:
+    new_x = []
+    new_y = []
 
     def __init__(self, parent, canvas):
         self.parent = parent
         self.canvas = canvas
 
     def smooth(self, orig_x, orig_y):
-        new_x = []
-        new_y = []
         for i in range(1, len(orig_x)-1):
             new_x.append(orig_x[i])
             try:
@@ -34,5 +34,4 @@ class ApplyFilter:
         return new_x, new_y
 
     def whittaker(self, orig_x, orig_y):
-        new_x = []
-        new_y = []
+        return
