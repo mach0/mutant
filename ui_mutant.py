@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mutant.ui'
 #
-# Created: Sun May 24 11:18:17 2015
+# Created: Tue May 26 07:08:15 2015
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!

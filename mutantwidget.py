@@ -64,8 +64,8 @@ has_pyqtgraph = True
 try:
     import pyqtgraph as pg
     from cust.pqg_cust import DateTimeViewBox, DateTimeAxis
-    has_pyqtgraph = StrictVersion(pg.__version__) >= StrictVersion(
-        '0.9.8')
+    # TODO debian package has no __version__
+    # has_pyqtgraph = StrictVersion(pg.__version__) >= StrictVersion('0.9.8')
 except ImportError:
     has_pyqtgraph = False
 

@@ -1,6 +1,6 @@
 [general]
 name=Mutant
-qgisMinimumVersion=2.0
+qgisMinimumVersion=2.2
 about=Display raster layer values at current mouse position ordered by time.
     Time can be extracted on the fly from Layer(File)name or other sources.
     Used Layers can easily be selected by using expressions.
@@ -8,15 +8,17 @@ description=Display values from loaded raster layers in a table or plot
     optionally ordered by time which can be extracted from the layername (or
     other sources).
 category=Raster
-version=version 0.1.1
+version=version 0.2.0
 author=Werner Macho
 email=werner.macho@gmail.com
 ; other authors include :
 ; initial Version as Value Tool: Ghislain Picard,
 ; adoption of Valute Tool for QGIS 2.0: Richard Duivenvoorde,
 ; Bug fixes and improvements: Ricardo Silva, Etienne Tourigny, Radim Blazek
+; Technical help with questions: Peter Wells, Martin Dobias
 ; optional metadata entries
 changelog=
+    0.2.0 : restructuring of error checking, QWT errors fixed
     0.1.1 : cleanup, change description, correct homepage
     0.1.0 : initial release based on Valuetool 0.8.5
 
