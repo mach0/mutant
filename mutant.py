@@ -66,12 +66,12 @@ class Mutant:
                                           self.iface.mainWindow())
         self.mutantdockwidget.setObjectName("Mutant")
         self.mutantdockwidget.setWidget(self.mutantwidget)
-        # QObject.connect(self.valuedockwidget,
+        # QObject.connect(self.mutantdockwidget,
         # SIGNAL('visibilityChanged ( bool )'), self.showHideDockWidget)
 
         # add the dockwidget to iface
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.mutantdockwidget)
-        # self.valuewidget.show()
+        # self.mutantwidget.show()
 
     def unload(self):
         QSettings().setValue('plugins/mutant/mouseClick',

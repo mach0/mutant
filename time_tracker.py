@@ -1,20 +1,15 @@
-"""
-/***************************************************************************
-	mutant			TimeTracker
-				-------------------
-	begin			: 2014-06-15
-	copyright		: (C) 2014 by Werner Macho
-	email			: werner.macho@gmail.com
- ***************************************************************************/
+"""mutant - MUlti Temporal ANalysis Tool
+begin			: 2014/06/15
+copyright		: (c) 2014- by Werner Macho
+email			: werner.macho@gmail.com
 
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+based on valuetool
+copyright		: (C) 2008-2010 by G. Picard
+
+.. note:: This program is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 2 of the License, or
+     (at your option) any later version.
 """
 
 from PyQt4.QtCore import *
@@ -44,6 +39,7 @@ class TimeTracker:
         self.select_date = self.parent.dateLength
         self.pattern_edit = self.parent.patternLineEdit
         self.sample_edit = self.parent.sampleLineEdit
+        self.write_meta = self.parent.writeMetaPushButton
 
         # This data structure looks like:
         # {
@@ -77,6 +73,9 @@ class TimeTracker:
 
         self.sample_edit.textChanged.connect(self.refresh_tracker)
         self.sample_edit.textChanged.connect(self.validate_date_string)
+
+        self.write_meta.clicked.connect(self.write_XML) # FIXME Find function
+        #  to only write XML
 
         self.initiate_values()
 
@@ -126,16 +125,14 @@ class TimeTracker:
                 pass
 
     def track_layer(self, layer):
-        # given a layer, determine its date and write the entry to the data
-        # structure.
+        """given a layer, determine its date and write the entry to the data
+        structure."""
         layer_id = layer.id()
         # extract time from layers if there is some
         self.layer_times[layer_id] = self.extract_time_from_layer(layer)
 
     def get_time_for_layer(self, layer):
-        """
-        Retrieves a time from the internal store
-        """
+        """Retrieves a time from the internal store"""
         layer_id = layer.id()
         try:
             layer_time = self.layer_times[layer_id]
@@ -256,7 +253,7 @@ class TimeTracker:
         # return that date as a datetime.datetime
         return date
 
-    def validate_date_string(self):
+    def validate_date_string(self):  # FIXME check for double input e.g. %H%H
         list_widget = self.parent.extractionPriorityListWidget
         valid = True
 

@@ -64,8 +64,11 @@ has_pyqtgraph = True
 try:
     import pyqtgraph as pg
     from cust.pqg_cust import DateTimeViewBox, DateTimeAxis
-    # TODO debian package has no __version__
-    # has_pyqtgraph = StrictVersion(pg.__version__) >= StrictVersion('0.9.8')
+    if pg.__version__ == "":  # assuming debian package with no version
+        has_pyqtgraph = True
+    else:
+        has_pyqtgraph = StrictVersion(pg.__version__) >= StrictVersion('0.9.8')
+
 except ImportError:
     has_pyqtgraph = False
 
@@ -151,6 +154,8 @@ class MutantWidget(QWidget, Ui_Widget):
                         self.catch_errors)
 
         self.exportPushButton.clicked.connect(self.export_values)
+        # TODO Get Export from graph values
+        # self.exportPushButton_2.clicked.connect(self.xxxx)
 
         self.registry = QgsMapLayerRegistry.instance()
         QObject.connect(self.registry,
@@ -159,9 +164,6 @@ class MutantWidget(QWidget, Ui_Widget):
         QObject.connect(self.registry,
                         SIGNAL("layersRemoved(QStringList)"),
                         self.catch_errors)
-        # FIXME Connect change in Layerlist to errorsearchfunction (create -
-        # from 377 on) if useable (rasterlayer ...) do plot otherwise
-        # errormessage
         self.setupUi_plot()
 
     def catch_errors(self):
@@ -172,9 +174,11 @@ class MutantWidget(QWidget, Ui_Widget):
                     text = self.tr("Mutant: No valid layers to display - "
                                    "add Rasterlayers")
                     self.pop_messagebar(text)
+                    self.changeActive(False)
                 else:
                     text = self.tr("Mutant: No valid layers to display")
                     self.pop_messagebar(text)
+                    self.changeActive(False)
                 self.values = []
                 return
             else:
@@ -194,7 +198,6 @@ class MutantWidget(QWidget, Ui_Widget):
             self.leYMax.setEnabled(True)
 
     def pop_messagebar(self, text, d_time=5):
-        # bar = self.iface.messageBar()
         if d_time == 0:
             self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), QgsMessageBar.WARNING)
         else:
@@ -293,9 +296,9 @@ class MutantWidget(QWidget, Ui_Widget):
             self.plotLibSelector.setCurrentIndex(0)
             self.change_plot()
         else:  # can only be 0 if nothing else matched
-            message_text = "Mutant cannot find any graphicslibrary for " \
-                           "creating Graph. Please install either Qwt >= 5.0 " \
-                           "or matplotlib >= 1.0 or PyQtGraph >= 0.9.8!"
+            message_text = "Mutant cannot find any graphiclibrary for " \
+                           "creating plots. Please install either Qwt >= 5.0 " \
+                           ",matplotlib >= 1.0 or PyQtGraph >= 0.9.8!"
             self.plot_message = QtGui.QLabel(message_text)
             self.plot_message.setWordWrap(True)
             self.stackedWidget.addWidget(self.plot_message)
@@ -339,9 +342,9 @@ class MutantWidget(QWidget, Ui_Widget):
             QObject.connect(self.canvas,
                             SIGNAL("layersChanged ()"),
                             self.invalidatePlot)
-            QObject.connect(self.canvas,
-                            SIGNAL("layersChanged ()"),
-                            self.catch_errors)
+            #QObject.connect(self.canvas,
+            #                SIGNAL("layersChanged ()"),
+            #                self.catch_errors)
             if not self.plotOnMove.isChecked():
                 QObject.connect(self.canvas,
                                 SIGNAL("xyCoordinates(const QgsPoint &)"),
@@ -583,9 +586,9 @@ class MutantWidget(QWidget, Ui_Widget):
         if len(self.values) == 0:
             self.labelStatus.setText(self.tr("No valid bands to display"))
 
-        self.showValues()
+        self.showValues(position)
 
-    def showValues(self):
+    def showValues(self, position):
         if self.tabWidget.currentIndex() == 1:
             if len(self.values) == 0:
                 # FIXME don't plot if there is no data to plot...
@@ -593,7 +596,7 @@ class MutantWidget(QWidget, Ui_Widget):
             else:
                 self.plot()
         else:
-            self.printInTable()
+            self.printInTable(position)
 
     def export_values(self):
         path = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
@@ -614,7 +617,6 @@ class MutantWidget(QWidget, Ui_Widget):
     def calculateStatistics(self, layersWOStatistics):
 
         self.invalidatePlot(False)
-
         self.statsChecked = True
 
         layernames = []
@@ -664,10 +666,12 @@ class MutantWidget(QWidget, Ui_Widget):
             return self.stats[layer][bandNo]
         return None
 
-    def printInTable(self):
+    def printInTable(self, position):
         self.valueTable.clearContents()
         # set table widget row count
         self.valueTable.setRowCount(len(self.values))
+        posX = position.x()
+        posY = position.y()
         irow = 0
         for layername, xval, value in self.values:
 
@@ -676,8 +680,12 @@ class MutantWidget(QWidget, Ui_Widget):
                 self.valueTable.setItem(irow, 0, QTableWidgetItem())
                 self.valueTable.setItem(irow, 1, QTableWidgetItem())
                 self.valueTable.setItem(irow, 2, QTableWidgetItem())
+                self.valueTable.setItem(irow, 3, QTableWidgetItem())
+                self.valueTable.setItem(irow, 4, QTableWidgetItem())
 
             self.valueTable.item(irow, 0).setText(layername)
+            self.valueTable.item(irow, 3).setText(str(posX))
+            self.valueTable.item(irow, 4).setText(str(posY))
 
             if self.mt_enabled:
                 graphlib = self.plotLibSelector.currentText()
@@ -801,7 +809,6 @@ class MutantWidget(QWidget, Ui_Widget):
             self.qwtPlot.setAxisScale(QwtPlot.xBottom, 1, len(self.values))
             # self.qwtPlot.setAxisScale(QwtPlot.yLeft, self.ymin, self.ymax)
             self.qwtPlot.setAxisScale(QwtPlot.yLeft, ymin, ymax)
-            # TODO: Create Function for catching None Data values with above
             try:
                 qwtx, qwtydata = zip(*filter(lambda x: x[1] is not None, zip(x_values, data_values)))
             except ValueError:
@@ -867,7 +874,6 @@ class MutantWidget(QWidget, Ui_Widget):
             self.pqg_plot_widget.clear()  # clean canvas on call
             # self.pqg_plot_item.clear()  # clear item
             # self.pqg_plot_widget.scene().removeItem(legend)
-            # self.pqg_plot_item.addLegend()  # TODO move to another place to not plot double
             self.pqg_plot_item.setYRange(ymin, ymax)
             style_normal = Qt.SolidLine
             # Qt.DashLine, Qt.DotLine, Qt.DashDotLine, Qt.DashDotDotLine, Qt.CustomDashLine
@@ -920,7 +926,7 @@ class MutantWidget(QWidget, Ui_Widget):
             self.mt_enabled = True
             if self.haspqg:
                 self.pqg_axis.set_time_enabled(True)
-            if self.hasqwt:
+            if self.hasqwt and self.plotLibSelector.currentText() == 'Qwt':
                 message = 'Mutant: There is currently no support using Date ' \
                           'values while using the Qwt plotlibrary'
                 self.pop_messagebar(message, 0)

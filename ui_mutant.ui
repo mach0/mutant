@@ -125,6 +125,16 @@
            <string>Date</string>
           </property>
          </column>
+         <column>
+          <property name="text">
+           <string>X Coordinate</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Y Coordinate</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>
@@ -133,8 +143,8 @@
       <attribute name="title">
        <string>Graph</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0" colspan="2">
         <widget class="QWidget" name="graphControls" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <property name="margin">
@@ -216,7 +226,7 @@
          </layout>
         </widget>
        </item>
-       <item>
+       <item row="1" column="0">
         <widget class="QComboBox" name="plotLibSelector">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -232,7 +242,26 @@ PyQtGraph (fast but lacking some features)</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="exportPushButton_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="toolTip">
+          <string>Export values from table to CSV</string>
+         </property>
+         <property name="text">
+          <string>Export to CSV</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QCheckBox" name="toggleInterpolation">
          <property name="enabled">
           <bool>false</bool>
@@ -242,7 +271,7 @@ PyQtGraph (fast but lacking some features)</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item row="3" column="0" colspan="2">
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="enabled">
           <bool>true</bool>
@@ -456,7 +485,7 @@ PyQtGraph (fast but lacking some features)</string>
       <attribute name="title">
        <string>Time</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout">
+      <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0" colspan="2">
         <widget class="QCheckBox" name="enableMTAnalysesCheckBox">
          <property name="toolTip">
@@ -467,7 +496,7 @@ PyQtGraph (fast but lacking some features)</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
+       <item row="1" column="0" colspan="3">
         <widget class="QLabel" name="priorityLabel">
          <property name="enabled">
           <bool>false</bool>
@@ -478,7 +507,7 @@ Drag &amp; Drop Fields</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="2" column="0" colspan="3">
         <widget class="QListWidget" name="extractionPriorityListWidget">
          <property name="enabled">
           <bool>false</bool>
@@ -497,15 +526,15 @@ Drag &amp; Drop Fields</string>
          </property>
          <item>
           <property name="text">
-           <string>Filename</string>
+           <string>XML</string>
           </property>
           <property name="checkState">
-           <enum>Checked</enum>
+           <enum>Unchecked</enum>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>XML</string>
+           <string>Filename</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -565,7 +594,7 @@ Drag &amp; Drop Fields</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="5" column="1" colspan="2">
         <widget class="QLineEdit" name="sampleLineEdit">
          <property name="readOnly">
           <bool>true</bool>
@@ -582,7 +611,7 @@ Drag &amp; Drop Fields</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="6" column="1" colspan="2">
         <widget class="QLineEdit" name="patternLineEdit">
          <property name="enabled">
           <bool>false</bool>
@@ -602,6 +631,13 @@ Drag &amp; Drop Fields</string>
          </property>
          <property name="checked">
           <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QPushButton" name="writeMetaPushButton">
+         <property name="text">
+          <string>Write Meta</string>
          </property>
         </widget>
        </item>
