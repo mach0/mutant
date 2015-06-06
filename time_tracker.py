@@ -74,7 +74,7 @@ class TimeTracker:
         self.sample_edit.textChanged.connect(self.refresh_tracker)
         self.sample_edit.textChanged.connect(self.validate_date_string)
 
-        self.write_meta.clicked.connect(self.write_XML) # FIXME Find function
+        #  self.write_meta.clicked.connect(self.write_XML) # FIXME Find function
         #  to only write XML
 
         self.initiate_values()
