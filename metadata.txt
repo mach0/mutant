@@ -8,7 +8,7 @@ description=Display values from loaded raster layers in a table or plot
     optionally ordered by time which can be extracted from the layername (or
     other sources).
 category=Raster
-version=version 0.2.0
+version=version 0.3.0
 author=Werner Macho
 email=werner.macho@gmail.com
 ; other authors include :
@@ -18,6 +18,7 @@ email=werner.macho@gmail.com
 ; Technical help with questions: Peter Wells, Martin Dobias
 ; optional metadata entries
 changelog=
+    0.3.0 : better error handling, fixing export of CSV, adding X and Y as columns
     0.2.0 : restructuring of error checking, QWT errors fixed
     0.1.1 : cleanup, change description, correct homepage
     0.1.0 : initial release based on Valuetool 0.8.5
