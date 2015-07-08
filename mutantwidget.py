@@ -125,7 +125,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.mplLine = None
 
         QObject.connect(self.plotLibSelector,
-                        SIGNAL("currentIndexChanged ( int )"),
+                        SIGNAL("currentIndexChanged(int)"),
                         self.change_plot)
         QObject.connect(self.tabWidget,
                         SIGNAL("currentChanged ( int )"),
@@ -174,11 +174,11 @@ class MutantWidget(QWidget, Ui_Widget):
                     text = self.tr("Mutant: No valid layers to display - "
                                    "add Rasterlayers")
                     self.pop_messagebar(text)
-                    self.changeActive(False)
+                    self.changeActive(False, False)
                 else:
                     text = self.tr("Mutant: No valid layers to display")
                     self.pop_messagebar(text)
-                    self.changeActive(False)
+                    self.changeActive(False, False)
                 self.values = []
                 return
             else:
@@ -304,7 +304,8 @@ class MutantWidget(QWidget, Ui_Widget):
             self.stackedWidget.addWidget(self.plot_message)
             self.pop_messagebar(message_text)
 
-    def change_plot(self):
+    def change_plot(self):  # TODO Add function to redraw with same values in
+    #  different plot here
         if self.stackedWidget.count() > 1:
             if self.plotLibSelector.currentText() == 'Qwt':
                 self.stackedWidget.setCurrentIndex(self.qwt_widgetnumber)
@@ -314,10 +315,12 @@ class MutantWidget(QWidget, Ui_Widget):
                 self.stackedWidget.setCurrentIndex(self.mpl_widgetnumber)
                 self.toggleInterpolation.setEnabled(True)
                 self.toggleInterpolation.setVisible(True)
+                self.mpl_subplot.clear()
             elif self.plotLibSelector.currentText() == 'PyQtGraph':
                 self.stackedWidget.setCurrentIndex(self.pqg_widgetnumber)
                 self.toggleInterpolation.setDisabled(True)
                 self.toggleInterpolation.setVisible(False)
+                self.pqg_plot_widget.clear()
         elif self.stackedWidget.count() == 1:
             self.stackedWidget.setCurrentIndex(0)
         else:
@@ -418,10 +421,6 @@ class MutantWidget(QWidget, Ui_Widget):
         return activeBands
 
     def printValue(self, position):
-
-        if debug > 0:
-            print(position)
-
         if not position:
             return
         if self.tabWidget.currentIndex() == 2:

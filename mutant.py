@@ -14,6 +14,10 @@ copyright		: (C) 2008-2010 by G. Picard
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
+# activate pycharm debugging
+#import pydevd
+#pydevd.settrace('localhost', port=55555, stdoutToServer=True,
+#                stderrToServer=True, suspend=False)
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -26,10 +30,7 @@ from mutantmap import MutantMap
 # initialize Qt resources from file resources.py
 import resources_rc
 
-# activate pycharm debugging
-#import pydevd
-#pydevd.settrace('localhost', port=53100, stdoutToServer=True,
-#                stderrToServer=True, suspend=False)
+
 
 
 class Mutant:
@@ -85,7 +86,10 @@ class Mutant:
         self.iface.removeToolBarIcon(self.action)
 
     def toggleTool(self, active):
-        self.activateTool() if active else self.deactivateTool()
+        if active:
+            self.activateTool()
+        else:
+            self.deactivateTool()
 
     def toggleMouseClick(self, toggle):
         if toggle:

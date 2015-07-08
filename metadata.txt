@@ -16,6 +16,7 @@ email=werner.macho@gmail.com
 ; adoption of Valute Tool for QGIS 2.0: Richard Duivenvoorde,
 ; Bug fixes and improvements: Ricardo Silva, Etienne Tourigny, Radim Blazek
 ; Technical help with questions: Peter Wells, Martin Dobias
+
 ; optional metadata entries
 changelog=
     0.3.1 : Fix bug in time_tracker
