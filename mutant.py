@@ -14,10 +14,9 @@ copyright		: (C) 2008-2010 by G. Picard
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
-# activate pycharm debugging
+#activate pycharm debugging
 #import pydevd
-#pydevd.settrace('localhost', port=55555, stdoutToServer=True,
-#                stderrToServer=True, suspend=False)
+#pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -105,6 +104,10 @@ class Mutant:
             self.canvas.setMapTool(self.tool)
         if not self.mutantdockwidget.isVisible():
             self.mutantdockwidget.show()
+            self.mutantdockwidget.raise_()
+        else:
+            self.mutantdockwidget.hide()
+            self.deactivateTool(False)
         if changeActive:
             self.mutantwidget.changeActive(True)
 

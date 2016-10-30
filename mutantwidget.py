@@ -341,7 +341,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.isActive = active
 
         if active:
-            self.toggleMutant.setCheckState(Qt.Checked)
+            #self.toggleMutant.setCheckState(Qt.Checked)
             QObject.connect(self.canvas,
                             SIGNAL("layersChanged ()"),
                             self.invalidatePlot)

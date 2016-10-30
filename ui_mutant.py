@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mutant.ui'
 #
-# Created: Thu May 28 22:36:20 2015
+# Created: Sat Aug 22 14:51:05 2015
 #      by: PyQt4 UI code generator 4.11.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,16 +26,9 @@ except AttributeError:
 class Ui_Mutant(object):
     def setupUi(self, Mutant):
         Mutant.setObjectName(_fromUtf8("Mutant"))
-        Mutant.resize(346, 415)
+        Mutant.resize(360, 393)
         self.gridLayout = QtGui.QGridLayout(Mutant)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.toggleMutant = QtGui.QCheckBox(Mutant)
-        self.toggleMutant.setObjectName(_fromUtf8("toggleMutant"))
-        self.gridLayout.addWidget(self.toggleMutant, 0, 0, 1, 1)
-        self.toggleFilter = QtGui.QCheckBox(Mutant)
-        self.toggleFilter.setEnabled(False)
-        self.toggleFilter.setObjectName(_fromUtf8("toggleFilter"))
-        self.gridLayout.addWidget(self.toggleFilter, 0, 2, 1, 1)
         self.tabWidget = QtGui.QTabWidget(Mutant)
         self.tabWidget.setTabPosition(QtGui.QTabWidget.North)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
@@ -241,7 +234,7 @@ class Ui_Mutant(object):
         item.setCheckState(QtCore.Qt.Unchecked)
         self.extractionPriorityListWidget.addItem(item)
         item = QtGui.QListWidgetItem()
-        item.setCheckState(QtCore.Qt.Checked)
+        item.setCheckState(QtCore.Qt.Unchecked)
         self.extractionPriorityListWidget.addItem(item)
         item = QtGui.QListWidgetItem()
         item.setCheckState(QtCore.Qt.Unchecked)
@@ -276,20 +269,29 @@ class Ui_Mutant(object):
         self.gridLayout_4.addWidget(self.patternLineEdit, 6, 1, 1, 2)
         self.writeMetaDataCheckBox = QtGui.QCheckBox(self.tabMulti)
         self.writeMetaDataCheckBox.setEnabled(False)
-        self.writeMetaDataCheckBox.setChecked(False)
+        self.writeMetaDataCheckBox.setChecked(True)
+        self.writeMetaDataCheckBox.setTristate(False)
         self.writeMetaDataCheckBox.setObjectName(_fromUtf8("writeMetaDataCheckBox"))
         self.gridLayout_4.addWidget(self.writeMetaDataCheckBox, 7, 0, 1, 2)
         self.writeMetaPushButton = QtGui.QPushButton(self.tabMulti)
         self.writeMetaPushButton.setObjectName(_fromUtf8("writeMetaPushButton"))
         self.gridLayout_4.addWidget(self.writeMetaPushButton, 7, 2, 1, 1)
         self.tabWidget.addTab(self.tabMulti, _fromUtf8(""))
-        self.gridLayout.addWidget(self.tabWidget, 1, 0, 1, 3)
+        self.tab = QtGui.QWidget()
+        self.tab.setObjectName(_fromUtf8("tab"))
+        self.toggleFilter = QtGui.QCheckBox(self.tab)
+        self.toggleFilter.setEnabled(False)
+        self.toggleFilter.setGeometry(QtCore.QRect(10, 10, 126, 21))
+        self.toggleFilter.setObjectName(_fromUtf8("toggleFilter"))
+        self.toggleMutant = QtGui.QCheckBox(self.tab)
+        self.toggleMutant.setGeometry(QtCore.QRect(20, 50, 72, 21))
+        self.toggleMutant.setObjectName(_fromUtf8("toggleMutant"))
+        self.tabWidget.addTab(self.tab, _fromUtf8(""))
+        self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 2)
         self.labelStatus = QtGui.QLabel(Mutant)
         self.labelStatus.setText(_fromUtf8(""))
         self.labelStatus.setObjectName(_fromUtf8("labelStatus"))
-        self.gridLayout.addWidget(self.labelStatus, 2, 0, 1, 1)
-        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem3, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.labelStatus, 1, 0, 1, 1)
 
         self.retranslateUi(Mutant)
         self.tabWidget.setCurrentIndex(2)
@@ -299,10 +301,6 @@ class Ui_Mutant(object):
 
     def retranslateUi(self, Mutant):
         Mutant.setWindowTitle(_translate("Mutant", "Form", None))
-        self.toggleMutant.setToolTip(_translate("Mutant", "Can also be enabled using the toolbar icon", None))
-        self.toggleMutant.setText(_translate("Mutant", "Enable", None))
-        self.toggleFilter.setToolTip(_translate("Mutant", "proof of concept - to be extended", None))
-        self.toggleFilter.setText(_translate("Mutant", "Enable Filtering", None))
         self.cbxDigits.setToolTip(_translate("Mutant", "Specify how many decimals to show in table", None))
         self.cbxDigits.setText(_translate("Mutant", "Decimals", None))
         self.exportPushButton.setToolTip(_translate("Mutant", "Export values from table to CSV", None))
@@ -397,4 +395,9 @@ class Ui_Mutant(object):
         self.writeMetaDataCheckBox.setText(_translate("Mutant", "Write time to metadata (XML)", None))
         self.writeMetaPushButton.setText(_translate("Mutant", "Write Meta", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabMulti), _translate("Mutant", "Time", None))
+        self.toggleFilter.setToolTip(_translate("Mutant", "proof of concept - to be extended", None))
+        self.toggleFilter.setText(_translate("Mutant", "Enable Filtering", None))
+        self.toggleMutant.setToolTip(_translate("Mutant", "Can also be enabled using the toolbar icon", None))
+        self.toggleMutant.setText(_translate("Mutant", "Enable", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("Mutant", "Filtering", None))
 
