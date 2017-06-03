@@ -6,15 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>360</width>
-    <height>393</height>
+    <width>346</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="toggleMutant">
+     <property name="toolTip">
+      <string>Can also be enabled using the toolbar icon</string>
+     </property>
+     <property name="text">
+      <string>Enable</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QCheckBox" name="toggleFilter">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>proof of concept - to be extended</string>
+     </property>
+     <property name="text">
+      <string>Enable Filtering</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="3">
     <widget class="QTabWidget" name="tabWidget">
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
@@ -124,16 +147,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QWidget" name="graphControls" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
+          <property name="margin">
            <number>0</number>
           </property>
           <item>
@@ -523,7 +537,7 @@ Drag &amp; Drop Fields</string>
            <string>Filename</string>
           </property>
           <property name="checkState">
-           <enum>Unchecked</enum>
+           <enum>Checked</enum>
           </property>
          </item>
          <item>
@@ -616,9 +630,6 @@ Drag &amp; Drop Fields</string>
           <string>Write time to metadata (XML)</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="tristate">
           <bool>false</bool>
          </property>
         </widget>
@@ -632,54 +643,27 @@ Drag &amp; Drop Fields</string>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
-      <attribute name="title">
-       <string>Filtering</string>
-      </attribute>
-      <widget class="QCheckBox" name="toggleFilter">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>126</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>proof of concept - to be extended</string>
-       </property>
-       <property name="text">
-        <string>Enable Filtering</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="toggleMutant">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>50</y>
-         <width>72</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>Can also be enabled using the toolbar icon</string>
-       </property>
-       <property name="text">
-        <string>Enable</string>
-       </property>
-      </widget>
-     </widget>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <widget class="QLabel" name="labelStatus">
      <property name="text">
       <string/>
      </property>
     </widget>
+   </item>
+   <item row="0" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

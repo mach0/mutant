@@ -19,6 +19,7 @@ email=werner.macho@gmail.com
 
 ; optional metadata entries
 changelog=
+    0.4.1 : Code cleanup
     0.4.0 : Updated on/off with Icon, improved data handling
     0.3.1 : Fix bug in time_tracker
     0.3.0 : better error handling, fixing export of CSV, adding X and Y as columns

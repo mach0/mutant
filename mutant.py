@@ -85,10 +85,7 @@ class Mutant:
         self.iface.removeToolBarIcon(self.action)
 
     def toggleTool(self, active):
-        if active:
-            self.activateTool()
-        else:
-            self.deactivateTool()
+        self.activateTool() if active else self.deactivateTool()
 
     def toggleMouseClick(self, toggle):
         if toggle:
@@ -104,10 +101,6 @@ class Mutant:
             self.canvas.setMapTool(self.tool)
         if not self.mutantdockwidget.isVisible():
             self.mutantdockwidget.show()
-            self.mutantdockwidget.raise_()
-        else:
-            self.mutantdockwidget.hide()
-            self.deactivateTool(False)
         if changeActive:
             self.mutantwidget.changeActive(True)
 

@@ -125,7 +125,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.mplLine = None
 
         QObject.connect(self.plotLibSelector,
-                        SIGNAL("currentIndexChanged(int)"),
+                        SIGNAL("currentIndexChanged ( int )"),
                         self.change_plot)
         QObject.connect(self.tabWidget,
                         SIGNAL("currentChanged ( int )"),
@@ -174,11 +174,11 @@ class MutantWidget(QWidget, Ui_Widget):
                     text = self.tr("Mutant: No valid layers to display - "
                                    "add Rasterlayers")
                     self.pop_messagebar(text)
-                    self.changeActive(False, False)
+                    self.changeActive(False)
                 else:
                     text = self.tr("Mutant: No valid layers to display")
                     self.pop_messagebar(text)
-                    self.changeActive(False, False)
+                    self.changeActive(False)
                 self.values = []
                 return
             else:
@@ -304,8 +304,7 @@ class MutantWidget(QWidget, Ui_Widget):
             self.stackedWidget.addWidget(self.plot_message)
             self.pop_messagebar(message_text)
 
-    def change_plot(self):  # TODO Add function to redraw with same values in
-    #  different plot here
+    def change_plot(self):
         if self.stackedWidget.count() > 1:
             if self.plotLibSelector.currentText() == 'Qwt':
                 self.stackedWidget.setCurrentIndex(self.qwt_widgetnumber)
@@ -341,7 +340,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.isActive = active
 
         if active:
-            #self.toggleMutant.setCheckState(Qt.Checked)
+            self.toggleMutant.setCheckState(Qt.Checked)
             QObject.connect(self.canvas,
                             SIGNAL("layersChanged ()"),
                             self.invalidatePlot)
@@ -421,6 +420,10 @@ class MutantWidget(QWidget, Ui_Widget):
         return activeBands
 
     def printValue(self, position):
+
+        if debug > 0:
+            print(position)
+
         if not position:
             return
         if self.tabWidget.currentIndex() == 2:
