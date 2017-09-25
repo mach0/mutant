@@ -29,7 +29,7 @@ from qgis.PyQt import QtCore, QtGui
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
 from qgis.PyQt.QtWidgets import QWidget, QApplication, QTableWidgetItem, QToolButton, QActionGroup, QMenu, QAction
 from qgis.PyQt.QtGui import QBrush, QPen, QIcon
-from qgis.core import QgsMapLayer, QgsMapLayerRegistry, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
+from qgis.core import QgsMapLayer, QgsProject, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
 from qgis.gui import QgsMessageBar
 
 import fnmatch  # Import filtering for Layer names
@@ -145,7 +145,7 @@ class MutantWidget(QWidget, Ui_Widget):
         # TODO Get Export from graph values
         # self.exportPushButton_2.clicked.connect(self.xxxx)
 
-        self.registry = QgsMapLayerRegistry.instance()
+        self.registry = QgsProject.instance()
         self.registry.layersAdded.connect(self.catch_errors)
         self.registry.layersRemoved.connect(self.catch_errors)
         self.setupUi_plot()

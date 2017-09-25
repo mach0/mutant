@@ -15,7 +15,7 @@ copyright		: (C) 2008-2010 by G. Picard
 from builtins import object
 from qgis.PyQt.QtCore import QObject, Qt, QFileInfo
 from qgis.PyQt.QtGui import QPalette
-from qgis.core import QgsMapLayerRegistry, QgsMapLayer
+from qgis.core import QgsProject, QgsMapLayer
 
 import datetime
 
@@ -47,7 +47,7 @@ class TimeTracker(object):
         #   'layer_id' : datetime.datetime(2014, 2, 23),
         # }
 
-        self.registry = QgsMapLayerRegistry.instance()
+        self.registry = QgsProject.instance()
 
     def enable_selection(self):
         self.registry.layersAdded.connect(self.refresh_tracker)
