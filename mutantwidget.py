@@ -21,9 +21,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qgis.core import *
+from PyQt4.QtCore import SIGNAL, QObject, QSettings, Qt, QSize
+from PyQt4.QtGui import QWidget, QBrush, QPen, QApplication, QTableWidgetItem, QToolButton, QIcon, QActionGroup, QMenu, QAction
+from qgis.core import QgsMapLayer, QgsMapLayerRegistry, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
 from qgis.gui import QgsMessageBar
 
 import fnmatch  # Import filtering for Layer names
@@ -472,7 +472,7 @@ class MutantWidget(QWidget, Ui_Widget):
 
         counter = 0
         for layer in rasterlayers:
-            layer_name = unicode(layer.name())
+            layer_name = str(layer.name())
             layer_srs = layer.crs()
 
             pos = position
@@ -486,7 +486,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 srsTransform = QgsCoordinateTransform(mapCanvasSrs, layer_srs)
                 try:
                     pos = srsTransform.transform(position)
-                except QgsCsException, err:
+                except QgsCsException as err:
                     # ignore transformation errors
                     continue
 
@@ -603,7 +603,7 @@ class MutantWidget(QWidget, Ui_Widget):
     def export_values(self):
         path = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
         if path != "":
-            with open(unicode(path), 'wb') as stream:
+            with open(str(path), 'wb') as stream:
                 writer = csv.writer(stream)
                 for row in range(self.valueTable.rowCount()):
                     rowdata = []
@@ -611,7 +611,7 @@ class MutantWidget(QWidget, Ui_Widget):
                         item = self.valueTable.item(row, column)
                         if item is not None:
                             rowdata.append(
-                                unicode(item.text()).encode('utf8'))
+                                str(item.text()).encode('utf8'))
                         else:
                             rowdata.append('')
                     writer.writerow(rowdata)

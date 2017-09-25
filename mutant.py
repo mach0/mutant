@@ -18,16 +18,17 @@ __copyright__ = 'Copyright 2014, Werner Macho'
 #import pydevd
 #pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-# from qgis.core import *
+from PyQt4.QtCore import QObject, SIGNAL, QSettings, Qt
+from PyQt4.QtGui import QDockWidget, QAction, QIcon
 
-from mutantwidget import MutantWidget
 from mutantmap import MutantMap
+from mutantwidget import MutantWidget
+
+
+# from qgis.core import *
 
 # from selectPointTool import *
 # initialize Qt resources from file resources.py
-import resources_rc
 
 
 

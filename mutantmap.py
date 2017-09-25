@@ -16,7 +16,7 @@ __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 # from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
+from PyQt4.QtCore import SIGNAL, QPoint
 from PyQt4.QtGui import QCursor, QPixmap
 
 from qgis.gui import QgsMapTool

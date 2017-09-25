@@ -12,9 +12,9 @@ copyright		: (C) 2008-2010 by G. Picard
      (at your option) any later version.
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qgis.core import *
+from PyQt4.QtCore import QObject, SIGNAL, Qt, QFileInfo
+from PyQt4.QtGui import QPalette
+from qgis.core import QgsMapLayerRegistry, QgsMapLayer
 
 import datetime
 
