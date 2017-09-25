@@ -50,7 +50,7 @@ class Mutant(object):
         self.tool = MutantMap(self.canvas, self.action)
         self.saveTool = None
         self.action.triggered.connect(self.activateTool)
-        self.tool.deactivate.connect(self.deactivateTool)
+        self.tool.deactivated.connect(self.deactivateTool)
 
         # create the widget to display information
         self.mutantwidget = MutantWidget(self.iface)
