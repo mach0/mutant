@@ -11,6 +11,11 @@ copyright		: (C) 2008-2010 by G. Picard
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import zip
+from builtins import range
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
@@ -20,22 +25,23 @@ import logging
 # change the level back to logging.WARNING(the default) before releasing
 logging.basicConfig(level=logging.DEBUG)
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import SIGNAL, QObject, QSettings, Qt, QSize
-from PyQt4.QtGui import QWidget, QBrush, QPen, QApplication, QTableWidgetItem, QToolButton, QIcon, QActionGroup, QMenu, QAction
+from qgis.PyQt import QtCore, QtGui
+from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
+from qgis.PyQt.QtWidgets import QWidget, QApplication, QTableWidgetItem, QToolButton, QActionGroup, QMenu, QAction
+from qgis.PyQt.QtGui import QBrush, QPen, QIcon
 from qgis.core import QgsMapLayer, QgsMapLayerRegistry, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
 from qgis.gui import QgsMessageBar
 
 import fnmatch  # Import filtering for Layer names
 import datetime  # for dealing with Multi-temporal data
 from distutils.version import StrictVersion
-from time_tracker import TimeTracker
-from applyfilter import ApplyFilter
+from .time_tracker import TimeTracker
+from .applyfilter import ApplyFilter
 import time
 import csv
 import operator
 
-from ui_mutant import Ui_Mutant as Ui_Widget
+from .ui_mutant import Ui_Mutant as Ui_Widget
 
 # TODO: Get better debugging
 debug = 0
@@ -55,7 +61,7 @@ try:
     import matplotlib.ticker as ticker
     import matplotlib.dates as dates
     from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
-    from cust.mpl_cust import MplSettings
+    from .cust.mpl_cust import MplSettings
     has_mpl = StrictVersion(matplotlib.__version__) >= StrictVersion('1.0.0')
 except ImportError:
     has_mpl = False
@@ -63,7 +69,7 @@ except ImportError:
 has_pyqtgraph = True
 try:
     import pyqtgraph as pg
-    from cust.pqg_cust import DateTimeViewBox, DateTimeAxis
+    from .cust.pqg_cust import DateTimeViewBox, DateTimeAxis
     if pg.__version__ == "":  # assuming debian package with no version
         has_pyqtgraph = True
     else:
@@ -124,46 +130,24 @@ class MutantWidget(QWidget, Ui_Widget):
         self.mplPlot = None
         self.mplLine = None
 
-        QObject.connect(self.plotLibSelector,
-                        SIGNAL("currentIndexChanged ( int )"),
-                        self.change_plot)
-        QObject.connect(self.tabWidget,
-                        SIGNAL("currentChanged ( int )"),
-                        self.tabWidgetChanged)
-        QObject.connect(self.layerSelection,
-                        SIGNAL("currentIndexChanged ( int )"),
-                        self.update_layers)
-        QObject.connect(self.bandSelection,
-                        SIGNAL("currentIndexChanged ( int )"),
-                        self.update_layers)
-        QObject.connect(self.selectionTable,
-                        SIGNAL("cellChanged ( int , int )"),
-                        self.layerSelected)
-        QObject.connect(self.enableMTAnalysesCheckBox,
-                        SIGNAL("toggled ( bool )"),
-                        self.on_mt_analysis_toggled)
-        QObject.connect(self.selectionStringLineEdit,
-                        SIGNAL("textChanged ( QString )"),
-                        self.update_layers)
-        QObject.connect(self.yAutoCheckBox,
-                        SIGNAL("toggled ( bool )"),
-                        self.y_auto_toggle)
+        self.plotLibSelector.currentIndexChanged .connect(self.change_plot)
+        self.tabWidget.currentChanged .connect(self.tabWidgetChanged)
+        self.layerSelection.currentIndexChanged .connect(self.update_layers)
+        self.bandSelection.currentIndexChanged .connect(self.update_layers)
+        self.selectionTable.cellChanged .connect(self.layerSelected)
+        self.enableMTAnalysesCheckBox.toggled .connect(self.on_mt_analysis_toggled)
+        self.selectionStringLineEdit.textChanged .connect(self.update_layers)
+        self.yAutoCheckBox.toggled .connect(self.y_auto_toggle)
 
-        QObject.connect(self.toggleMutant,
-                        SIGNAL("toggled ( bool )"),
-                        self.catch_errors)
+        self.toggleMutant.toggled .connect(self.catch_errors)
 
         self.exportPushButton.clicked.connect(self.export_values)
         # TODO Get Export from graph values
         # self.exportPushButton_2.clicked.connect(self.xxxx)
 
         self.registry = QgsMapLayerRegistry.instance()
-        QObject.connect(self.registry,
-                        SIGNAL("layersAdded(QList< QgsMapLayer * >)"),
-                        self.catch_errors)
-        QObject.connect(self.registry,
-                        SIGNAL("layersRemoved(QStringList)"),
-                        self.catch_errors)
+        self.registry.layersAdded.connect(self.catch_errors)
+        self.registry.layersRemoved.connect(self.catch_errors)
         self.setupUi_plot()
 
     def catch_errors(self):
@@ -341,24 +325,16 @@ class MutantWidget(QWidget, Ui_Widget):
 
         if active:
             self.toggleMutant.setCheckState(Qt.Checked)
-            QObject.connect(self.canvas,
-                            SIGNAL("layersChanged ()"),
-                            self.invalidatePlot)
+            self.canvas.layersChanged .connect(self.invalidatePlot)
             #QObject.connect(self.canvas,
             #                SIGNAL("layersChanged ()"),
             #                self.catch_errors)
             if not self.plotOnMove.isChecked():
-                QObject.connect(self.canvas,
-                                SIGNAL("xyCoordinates(const QgsPoint &)"),
-                                self.printValue)
+                self.canvas.xyCoordinates.connect(self.printValue)
         else:
             self.toggleMutant.setCheckState(Qt.Unchecked)
-            QObject.disconnect(self.canvas,
-                               SIGNAL("layersChanged ()"),
-                               self.invalidatePlot)
-            QObject.disconnect(self.canvas,
-                               SIGNAL("xyCoordinates(const QgsPoint &)"),
-                               self.printValue)
+            self.canvas.layersChanged .disconnect(self.invalidatePlot)
+            self.canvas.xyCoordinates.disconnect(self.printValue)
 
         if gui:
             self.tabWidget.setEnabled(active)
@@ -415,7 +391,7 @@ class MutantWidget(QWidget, Ui_Widget):
             else:
                 activeBands = self.layerBands[layer.id()] if (layer.id() in self.layerBands) else []
         else:
-            activeBands = range(1, layer.bandCount()+1)
+            activeBands = list(range(1, layer.bandCount()+1))
 
         return activeBands
 
@@ -527,8 +503,8 @@ class MutantWidget(QWidget, Ui_Widget):
                         continue
 
                 # if given no position, set values to 0
-                if position is None and ident is not None and ident.iterkeys() is not None:
-                    for key in ident.iterkeys():
+                if position is None and ident is not None and iter(ident.keys()) is not None:
+                    for key in ident.keys():
                         ident[key] = layer.dataProvider().noDataValue(key)
 
                 # bands displayed depends on cbxBands (all / active / selected)
@@ -539,7 +515,7 @@ class MutantWidget(QWidget, Ui_Widget):
                     if ident is not None and len(ident) > 1:
                         layer_name_with_band += ' ' + layer.bandName(iband)
 
-                    if not ident or not ident.has_key(iband):
+                    if not ident or iband not in ident:
                         bandvalue = "?"
                     else:
                         bandvalue = ident[iband]
@@ -649,8 +625,8 @@ class MutantWidget(QWidget, Ui_Widget):
 
     # get cached statistics for layer and band or None if not calculated
     def get_statistics(self, layer, bandNo, force=False):
-        if self.stats.has_key(layer):
-            if self.stats[layer].has_key(bandNo):
+        if layer in self.stats:
+            if bandNo in self.stats[layer]:
                 return self.stats[layer][bandNo]
         else:
             self.stats[layer] = {}
@@ -812,10 +788,10 @@ class MutantWidget(QWidget, Ui_Widget):
             # self.qwtPlot.setAxisScale(QwtPlot.yLeft, self.ymin, self.ymax)
             self.qwtPlot.setAxisScale(QwtPlot.yLeft, ymin, ymax)
             try:
-                qwtx, qwtydata = zip(*filter(lambda x: x[1] is not None, zip(x_values, data_values)))
+                qwtx, qwtydata = list(zip(*[x for x in zip(x_values, data_values) if x[1] is not None]))
             except ValueError:
                 return
-            self.curve.setData(range(1, len(qwtydata)+1), qwtydata)
+            self.curve.setData(list(range(1, len(qwtydata)+1)), qwtydata)
             self.qwtPlot.replot()
             self.qwtPlot.setVisible(len(qwtydata) > 0)
 
@@ -882,7 +858,7 @@ class MutantWidget(QWidget, Ui_Widget):
             style_filter = Qt.SolidLine
             # filter None values out of input data
             try:
-                pgxaxis, pgyaxis = zip(*filter(lambda x: x[1] is not None, zip(x_values, data_values)))
+                pgxaxis, pgyaxis = list(zip(*[x for x in zip(x_values, data_values) if x[1] is not None]))
             except ValueError:
                 return
             self.pqg_plot_widget.plot(pgxaxis,
@@ -1011,9 +987,7 @@ class MutantWidget(QWidget, Ui_Widget):
             button.setPopupMode(QToolButton.InstantPopup)
             group = QActionGroup(button)
             group.setExclusive(False)
-            QObject.connect(group,
-                            SIGNAL("triggered(QAction*)"),
-                            self.bandSelected)
+            group.triggered.connect(self.bandSelected)
             if self.bandSelection.currentIndex() == 2 and layer.bandCount() > 1:
                 menu = QMenu()
                 menu.installEventFilter(self)
@@ -1073,7 +1047,7 @@ class MutantWidget(QWidget, Ui_Widget):
             for layer in self.legend.layers():
                 if layer.id() == layer_id:
                     if toggleAll:
-                        activeBands = range(1, layer.bandCount()+1)
+                        activeBands = list(range(1, layer.bandCount()+1))
                     else:
                         activeBands = []
                     # toggle all band# actions

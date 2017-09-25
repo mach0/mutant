@@ -11,12 +11,14 @@ copyright		: (C) 2008-2010 by G. Picard
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
+from builtins import range
+from builtins import object
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 
-class ApplyFilter:
+class ApplyFilter(object):
 
     def __init__(self, parent, canvas):
         self.parent = parent

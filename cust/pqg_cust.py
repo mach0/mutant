@@ -17,7 +17,7 @@ __copyright__ = 'Copyright 2014, Werner Macho'
 
 import pyqtgraph as pg
 import time
-from PyQt4 import QtCore
+from qgis.PyQt import QtCore
 import datetime
 
 # def pqg_settings():
