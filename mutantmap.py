@@ -16,7 +16,7 @@ __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 # from PyQt4 import QtCore, QtGui
-from qgis.PyQt.QtCore import QPoint
+from qgis.PyQt.QtCore import QPoint, pyqtSignal
 from qgis.PyQt.QtGui import QCursor, QPixmap
 
 from qgis.gui import QgsMapTool
@@ -48,6 +48,9 @@ identify_cursor = [
 
 
 class MutantMap(QgsMapTool):
+
+    moved = pyqtSignal()
+    pressed = pyqtSignal()
 
     def __init__(self, canvas, button):
         QgsMapTool.__init__(self, canvas)

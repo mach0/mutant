@@ -442,7 +442,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.ymin = 1e38
         self.ymax = -1e38
 
-        mapCanvasSrs = self.iface.mapCanvas().mapRenderer().destinationCrs()
+        mapCanvasSrs = self.iface.mapCanvas().mapSettings().destinationCrs()
 
         # TODO - calculate the min/max values only once,
         # instead of every time!!!
@@ -483,9 +483,8 @@ class MutantWidget(QWidget, Ui_Widget):
                         for iband in range(1, layer.bandCount()+1):
                             ident[iband] = str(self.tr('out of extent'))
                     # we can only use context if layer is not projected
-                    elif canvas.hasCrsTransformEnabled() and \
-                                    layer.dataProvider().crs() != \
-                                    canvas.mapRenderer().destinationCrs():
+                    elif layer.dataProvider().crs() != \
+                                    canvas.mapSettings().destinationCrs():
                         ident = layer.dataProvider().identify(pos,
                                 QgsRaster.IdentifyFormatValue).results()
                     else:
@@ -494,7 +493,7 @@ class MutantWidget(QWidget, Ui_Widget):
                                       canvas.mapUnitsPerPixel())
                         height = round(extent.height() /
                                        canvas.mapUnitsPerPixel())
-                        extent = canvas.mapRenderer().mapToLayerCoordinates(
+                        extent = canvas.mapSettings().mapToLayerCoordinates(
                             layer, extent)
                         ident = layer.dataProvider().identify(pos,
                                                               QgsRaster.IdentifyFormatValue,
