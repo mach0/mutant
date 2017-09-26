@@ -60,7 +60,8 @@ try:
     import matplotlib.pyplot as plt
     import matplotlib.ticker as ticker
     import matplotlib.dates as dates
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+    #from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+    from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
     from .cust.mpl_cust import MplSettings
     has_mpl = StrictVersion(matplotlib.__version__) >= StrictVersion('1.0.0')
 except ImportError:
