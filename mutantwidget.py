@@ -27,7 +27,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 from qgis.PyQt import QtCore, QtGui
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
-from qgis.PyQt.QtWidgets import QWidget, QApplication, QTableWidgetItem, QToolButton, QActionGroup, QMenu, QAction
+from qgis.PyQt.QtWidgets import QWidget, QApplication, QTableWidgetItem, QToolButton, QActionGroup, QMenu, QAction, QLabel
 from qgis.PyQt.QtGui import QBrush, QPen, QIcon
 from qgis.core import QgsMapLayer, QgsProject, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
 from qgis.gui import QgsMessageBar
@@ -285,7 +285,7 @@ class MutantWidget(QWidget, Ui_Widget):
             message_text = "Mutant cannot find any graphiclibrary for " \
                            "creating plots. Please install either Qwt >= 5.0 " \
                            ",matplotlib >= 1.0 or PyQtGraph >= 0.9.8!"
-            self.plot_message = QtGui.QLabel(message_text)
+            self.plot_message = QLabel(message_text)
             self.plot_message.setWordWrap(True)
             self.stackedWidget.addWidget(self.plot_message)
             self.pop_messagebar(message_text)
@@ -1103,3 +1103,4 @@ class MutantWidget(QWidget, Ui_Widget):
     def toolPressed(self, position):
         if self.shouldPrintValues() and self.plotOnMove.isChecked():
             self.printValue(self.canvas.getCoordinateTransform().toMapCoordinates(position))
+
