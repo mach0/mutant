@@ -8,7 +8,7 @@ description=Display values from loaded raster layers in a table or plot
     optionally ordered by time which can be extracted from the layername (or
     other sources).
 category=Raster
-version=version 0.3.1
+version=version 2.0.0
 author=Werner Macho
 email=werner.macho@gmail.com
 ; other authors include :
@@ -19,6 +19,7 @@ email=werner.macho@gmail.com
 
 ; optional metadata entries
 changelog=
+    2.0.0 : branched QGIS2.0 version
     0.4.1 : Code cleanup
     0.4.0 : Updated on/off with Icon, improved data handling
     0.3.1 : Fix bug in time_tracker
