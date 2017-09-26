@@ -102,7 +102,8 @@ class MutantWidget(QWidget, Ui_Widget):
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
 
-        self.legend = self.iface.legendInterface()
+        #self.legend = self.iface.legendInterface()
+        self.legend = QgsProject.instance().layerTreeRoot()
         self.logger = logging.getLogger('.'.join((__name__,
                                         self.__class__.__name__)))
 
@@ -355,18 +356,18 @@ class MutantWidget(QWidget, Ui_Widget):
 
         if not index:
             index = self.layerSelection.currentIndex()
-        if index == 0:
+        if index == 0: # visible layers
             allLayers = self.canvas.layers()
-        elif index == 1 or index == 3:
-            allLayers = self.legend.layers()
-        elif index == 2:
-            for layer in self.legend.layers():
+        elif index == 1 or index == 3: # All layers | by selection string
+            allLayers = [ltl.layer() for ltl in self.legend.findLayers()]
+        elif index == 2: # Manual selection
+            for layer in [ltl.layer() for ltl in self.legend.findLayers()]:
                 if layer.id() in self.layersSelected:
                     allLayers.append(layer)
 
         for layer in allLayers:
 
-            if index == 3:
+            if index == 3: # by selection string
                 # Check if the layer name matches our filter and skip it if it
                 # doesn't
                 if not self.name_matches_filter(layer.name()):
@@ -946,17 +947,17 @@ class MutantWidget(QWidget, Ui_Widget):
         if self.tabWidget.currentIndex() != 2:
             return
 
-        if self.layerSelection.currentIndex() == 3:
+        if self.layerSelection.currentIndex() == 3: # by selection string
             self.selectionStringLineEdit.setEnabled(True)
         else:
             self.selectionStringLineEdit.setEnabled(False)
 
-        if self.layerSelection.currentIndex() == 0:
+        if self.layerSelection.currentIndex() == 0: # visible layers
             layers = self.activeRasterLayers(0)
-        elif self.layerSelection.currentIndex() == 3:
+        elif self.layerSelection.currentIndex() == 3: # by selection string
             layers = self.activeRasterLayers(3)
         else:
-            layers = self.activeRasterLayers(1)
+            layers = self.activeRasterLayers(1) # All layers
 
         self.selectionTable.blockSignals(True)
         self.selectionTable.clearContents()
@@ -972,6 +973,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 item.setFlags(item.flags() & ~Qt.ItemIsEnabled)
                 item.setCheckState(Qt.Checked)
             else:
+                # manual selection
                 if layer.id() in self.layersSelected:
                     item.setCheckState(Qt.Checked)
                 else:
@@ -1044,7 +1046,7 @@ class MutantWidget(QWidget, Ui_Widget):
 
         # special actions All/None
         if layerBand == -1:
-            for layer in self.legend.layers():
+            for layer in [ltl.layer() for ltl in self.legend.findLayers()]:
                 if layer.id() == layer_id:
                     if toggleAll:
                         activeBands = list(range(1, layer.bandCount()+1))
