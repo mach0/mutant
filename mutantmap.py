@@ -16,8 +16,8 @@ __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 # from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import *
-from PyQt4.QtGui import QCursor, QPixmap
+from qgis.PyQt.QtCore import QPoint, pyqtSignal
+from qgis.PyQt.QtGui import QCursor, QPixmap
 
 from qgis.gui import QgsMapTool
 
@@ -49,6 +49,9 @@ identify_cursor = [
 
 class MutantMap(QgsMapTool):
 
+    moved = pyqtSignal()
+    pressed = pyqtSignal()
+
     def __init__(self, canvas, button):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
@@ -65,7 +68,7 @@ class MutantMap(QgsMapTool):
     def deactivate(self):
         if not self:
             return
-        self.emit(SIGNAL("deactivate"))
+        self.deactivate.emit()
         self.button.setCheckable(False)
         QgsMapTool.deactivate(self)
 
@@ -73,7 +76,7 @@ class MutantMap(QgsMapTool):
         self.cursor = QCursor(cursor)
 
     def canvasMoveEvent(self, event):
-        self.emit(SIGNAL("moved"), QPoint(event.pos().x(), event.pos().y()))
+        self.moved.emit(QPoint(event.pos().x(), event.pos().y()))
 
     def canvasPressEvent(self, event):
-        self.emit(SIGNAL("pressed"), QPoint(event.pos().x(), event.pos().y()))
+        self.pressed.emit(QPoint(event.pos().x(), event.pos().y()))

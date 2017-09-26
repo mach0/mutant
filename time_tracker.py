@@ -12,9 +12,10 @@ copyright		: (C) 2008-2010 by G. Picard
      (at your option) any later version.
 """
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qgis.core import *
+from builtins import object
+from qgis.PyQt.QtCore import QObject, Qt, QFileInfo
+from qgis.PyQt.QtGui import QPalette
+from qgis.core import QgsProject, QgsMapLayer
 
 import datetime
 
@@ -27,7 +28,7 @@ except ImportError:
     from gdalconst import *
 
 
-class TimeTracker:
+class TimeTracker(object):
 
     def __init__(self, parent, canvas):
         self.layer_times = dict()
@@ -46,15 +47,11 @@ class TimeTracker:
         #   'layer_id' : datetime.datetime(2014, 2, 23),
         # }
 
-        self.registry = QgsMapLayerRegistry.instance()
+        self.registry = QgsProject.instance()
 
     def enable_selection(self):
-        QObject.connect(self.registry,
-                        SIGNAL("layersAdded(QList< QgsMapLayer * >)"),
-                        self.refresh_tracker)
-        QObject.connect(self.registry,
-                        SIGNAL("layersRemoved(QStringList)"),
-                        self.refresh_tracker)
+        self.registry.layersAdded.connect(self.refresh_tracker)
+        self.registry.layersRemoved.connect(self.refresh_tracker)
 
         self.widget.itemChanged.connect(self.refresh_tracker)
         self.widget.itemChanged.connect(self.validate_date_string)
@@ -80,12 +77,8 @@ class TimeTracker:
         self.initiate_values()
 
     def disable_selection(self):
-        QObject.disconnect(self.registry,
-                           SIGNAL("layersAdded(QList< QgsMapLayer * >)"),
-                           self.refresh_tracker)
-        QObject.disconnect(self.registry,
-                           SIGNAL("layersRemoved(QStringList)"),
-                           self.refresh_tracker)
+        self.registry.layersAdded.disconnect(self.refresh_tracker)
+        self.registry.layersRemoved.disconnect(self.refresh_tracker)
 
         self.widget.itemChanged.disconnect(self.refresh_tracker)
         self.widget.itemChanged.disconnect(self.validate_date_string)
@@ -117,7 +110,7 @@ class TimeTracker:
             return
 
         reg = QgsMapLayerRegistry.instance()
-        for layer_id, layer in reg.mapLayers().iteritems():
+        for layer_id, layer in reg.mapLayers().items():
             try:
                 if layer.type() == QgsMapLayer.RasterLayer:
                     self.track_layer(layer)
@@ -201,7 +194,7 @@ class TimeTracker:
 
     def initiate_values(self):
         path_to_layer = None
-        for layer_id, layer in self.registry.mapLayers().iteritems():
+        for layer_id, layer in self.registry.mapLayers().items():
             if layer.type() == QgsMapLayer.RasterLayer:
                 path_to_layer = layer.source()
                 break
@@ -221,7 +214,7 @@ class TimeTracker:
 
     def update_sample(self):
         path_to_layer = None
-        for layer_id, layer in self.registry.mapLayers().iteritems():
+        for layer_id, layer in self.registry.mapLayers().items():
             if layer.type() == QgsMapLayer.RasterLayer:
                 path_to_layer = layer.source()
                 break

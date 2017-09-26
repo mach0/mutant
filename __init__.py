@@ -11,11 +11,12 @@ copyright		: (C) 2008-2010 by G. Picard
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
+from __future__ import absolute_import
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 
 def classFactory(iface): 
-    from mutant import Mutant
+    from .mutant import Mutant
     return Mutant(iface)

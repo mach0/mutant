@@ -11,6 +11,8 @@ copyright		: (C) 2008-2010 by G. Picard
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
+from __future__ import absolute_import
+from builtins import object
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
@@ -18,21 +20,23 @@ __copyright__ = 'Copyright 2014, Werner Macho'
 #import pydevd
 #pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-# from qgis.core import *
+from qgis.PyQt.QtCore import QObject, QSettings, Qt
+from qgis.PyQt.QtWidgets import QDockWidget, QAction
+from qgis.PyQt.QtGui import QIcon
 
-from mutantwidget import MutantWidget
-from mutantmap import MutantMap
+from .mutantmap import MutantMap
+from .mutantwidget import MutantWidget
+
+
+# from qgis.core import *
 
 # from selectPointTool import *
 # initialize Qt resources from file resources.py
-import resources_rc
 
 
 
 
-class Mutant:
+class Mutant(object):
     def __init__(self, iface):
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
@@ -45,21 +49,15 @@ class Mutant:
         self.iface.addToolBarIcon(self.action)
         self.tool = MutantMap(self.canvas, self.action)
         self.saveTool = None
-        QObject.connect(self.action, SIGNAL("triggered()"), self.activateTool)
-        QObject.connect(self.tool, SIGNAL("deactivate"), self.deactivateTool)
+        self.action.triggered.connect(self.activateTool)
+        self.tool.deactivated.connect(self.deactivateTool)
 
         # create the widget to display information
         self.mutantwidget = MutantWidget(self.iface)
-        QObject.connect(self.tool, SIGNAL("moved"),
-                        self.mutantwidget.toolMoved)
-        QObject.connect(self.tool, SIGNAL("pressed"),
-                        self.mutantwidget.toolPressed)
-        QObject.connect(self.mutantwidget.toggleMutant,
-                        SIGNAL("clicked( bool )"),
-                        self.toggleTool)
-        QObject.connect(self.mutantwidget.plotOnMove,
-                        SIGNAL("clicked( bool )"),
-                        self.toggleMouseClick)
+        self.tool.moved.connect(self.mutantwidget.toolMoved)
+        self.tool.pressed.connect(self.mutantwidget.toolPressed)
+        self.mutantwidget.toggleMutant.clicked.connect(self.toggleTool)
+        self.mutantwidget.plotOnMove.clicked.connect(self.toggleMouseClick)
 
         # create the dockwidget with the correct parent and add the widget
         self.mutantdockwidget = QDockWidget("Mutant",
