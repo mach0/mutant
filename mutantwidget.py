@@ -185,9 +185,9 @@ class MutantWidget(QWidget, Ui_Widget):
 
     def pop_messagebar(self, text, d_time=5):
         if d_time == 0:
-            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), QgsMessageBar.WARNING)
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.WARNING)
         else:
-            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), QgsMessageBar.WARNING, d_time)
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.WARNING, d_time)
 
     def setupUi_plot(self):
         # plot
