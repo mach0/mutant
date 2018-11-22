@@ -27,9 +27,29 @@ logging.basicConfig(level=logging.DEBUG)
 
 from qgis.PyQt import QtCore, QtGui
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
-from qgis.PyQt.QtWidgets import QWidget, QApplication, QTableWidgetItem, QToolButton, QActionGroup, QMenu, QAction, QLabel
+from qgis.PyQt.QtWidgets import (
+    QWidget,
+    QApplication,
+    QTableWidgetItem,
+    QToolButton,
+    QActionGroup,
+    QMenu,
+    QAction,
+    QLabel
+)
 from qgis.PyQt.QtGui import QBrush, QPen, QIcon
-from qgis.core import QgsMapLayer, QgsProject, QgsRasterDataProvider, QgsCsException, QgsPoint, QgsCoordinateTransform, QgsRaster, QgsRasterBandStats, QgsRectangle
+from qgis.core import (
+    Qgis,
+    QgsMapLayer,
+    QgsProject,
+    QgsRasterDataProvider,
+    QgsCsException,
+    QgsPoint,
+    QgsCoordinateTransform,
+    QgsRaster,
+    QgsRasterBandStats,
+    QgsRectangle
+)
 from qgis.gui import QgsMessageBar
 
 import fnmatch  # Import filtering for Layer names
