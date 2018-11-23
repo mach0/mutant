@@ -6,6 +6,10 @@ email			: werner.macho@gmail.com
 based on valuetool
 copyright		: (C) 2008-2010 by G. Picard
 
+__author__ = 'werner.macho@gmail.com'
+__date__ = '2014/06/16'
+__copyright__ = 'Copyright 2014, Werner Macho'
+
 .. note:: This program is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
      the Free Software Foundation; either version 2 of the License, or
@@ -16,15 +20,14 @@ from __future__ import absolute_import
 from builtins import str
 from builtins import zip
 from builtins import range
-__author__ = 'werner.macho@gmail.com'
-__date__ = '2014/06/16'
-__copyright__ = 'Copyright 2014, Werner Macho'
-
-import logging
-
-# change the level back to logging.WARNING(the default) before releasing
-logging.basicConfig(level=logging.DEBUG)
-
+import fnmatch  # Import filtering for Layer names
+import datetime  # for dealing with Multi-temporal data
+from distutils.version import StrictVersion
+from .time_tracker import TimeTracker
+from .applyfilter import ApplyFilter
+import time
+import csv
+import operator
 from qgis.PyQt import QtCore, QtGui
 from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
 from qgis.PyQt.QtWidgets import (
@@ -52,16 +55,13 @@ from qgis.core import (
 )
 from qgis.gui import QgsMessageBar
 
-import fnmatch  # Import filtering for Layer names
-import datetime  # for dealing with Multi-temporal data
-from distutils.version import StrictVersion
-from .time_tracker import TimeTracker
-from .applyfilter import ApplyFilter
-import time
-import csv
-import operator
 
 from .ui_mutant import Ui_Mutant as Ui_Widget
+import logging
+# change the level back to logging.WARNING(the default) before releasing
+logging.basicConfig(level=logging.DEBUG)
+
+
 
 # TODO: Get better debugging
 debug = 0
@@ -163,13 +163,13 @@ class MutantWidget(QWidget, Ui_Widget):
 
         self.toggleMutant.toggled .connect(self.catch_errors)
 
-        self.exportPushButton.clicked.connect(self.export_values)
+        self.exportPushButton.clicked .connect(self.export_values)
         # TODO Get Export from graph values
         # self.exportPushButton_2.clicked.connect(self.xxxx)
 
         self.registry = QgsProject.instance()
-        self.registry.layersAdded.connect(self.catch_errors)
-        self.registry.layersRemoved.connect(self.catch_errors)
+        self.registry.layersAdded .connect(self.catch_errors)
+        self.registry.layersRemoved .connect(self.catch_errors)
         self.setupUi_plot()
 
     def catch_errors(self):
@@ -205,9 +205,9 @@ class MutantWidget(QWidget, Ui_Widget):
 
     def pop_messagebar(self, text, d_time=5):
         if d_time == 0:
-            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.WARNING)
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.Warning)
         else:
-            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.WARNING, d_time)
+            self.iface.messageBar().pushWidget(self.iface.messageBar().createMessage(text), Qgis.Warning, d_time)
 
     def setupUi_plot(self):
         # plot
@@ -285,7 +285,7 @@ class MutantWidget(QWidget, Ui_Widget):
             self.pqg_widgetnumber = self.stackedWidget.indexOf(
                 self.pqg_plot_widget)
             # on zoom change do:
-            self.pqg_plot_item.sigXRangeChanged.connect(self.refresh_ticks)
+            self.pqg_plot_item.sigXRangeChanged .connect(self.refresh_ticks)
 
         if plot_count > 1:
             self.plotLibSelector.setEnabled(True)
@@ -352,11 +352,11 @@ class MutantWidget(QWidget, Ui_Widget):
             #                SIGNAL("layersChanged ()"),
             #                self.catch_errors)
             if not self.plotOnMove.isChecked():
-                self.canvas.xyCoordinates.connect(self.printValue)
+                self.canvas.xyCoordinates .connect(self.printValue)
         else:
             self.toggleMutant.setCheckState(Qt.Unchecked)
             self.canvas.layersChanged .disconnect(self.invalidatePlot)
-            self.canvas.xyCoordinates.disconnect(self.printValue)
+            self.canvas.xyCoordinates .disconnect(self.printValue)
 
         if gui:
             self.tabWidget.setEnabled(active)
@@ -1009,7 +1009,7 @@ class MutantWidget(QWidget, Ui_Widget):
             button.setPopupMode(QToolButton.InstantPopup)
             group = QActionGroup(button)
             group.setExclusive(False)
-            group.triggered.connect(self.bandSelected)
+            group.triggered .connect(self.bandSelected)
             if self.bandSelection.currentIndex() == 2 and layer.bandCount() > 1:
                 menu = QMenu()
                 menu.installEventFilter(self)

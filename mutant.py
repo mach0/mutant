@@ -11,29 +11,28 @@ copyright		: (C) 2008-2010 by G. Picard
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
-from __future__ import absolute_import
-from builtins import object
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
-#activate pycharm debugging
-#import pydevd
-#pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
+# activate pycharm debugging
+# import pydevd
+# pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
 
-from qgis.PyQt.QtCore import QObject, QSettings, Qt
-from qgis.PyQt.QtWidgets import QDockWidget, QAction
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtCore import (
+    QObject,
+    QSettings,
+    Qt
+)
+from qgis.PyQt.QtWidgets import (
+    QDockWidget,
+    QAction
+)
+from qgis.PyQt.QtGui import (
+    QIcon
+)
 
 from .mutantmap import MutantMap
 from .mutantwidget import MutantWidget
-
-
-# from qgis.core import *
-
-# from selectPointTool import *
-# initialize Qt resources from file resources.py
-
-
 
 
 class Mutant(object):
@@ -61,7 +60,8 @@ class Mutant(object):
 
         # create the dockwidget with the correct parent and add the widget
         self.mutantdockwidget = QDockWidget("Mutant",
-                                          self.iface.mainWindow())
+                                            self.iface.mainWindow()
+                                            )
         self.mutantdockwidget.setObjectName("Mutant")
         self.mutantdockwidget.setWidget(self.mutantwidget)
         # QObject.connect(self.mutantdockwidget,
@@ -111,6 +111,7 @@ class Mutant(object):
             self.saveTool = None
         else:
             self.canvas.unsetMapTool(self.tool)
+
         self.tool.blockSignals(False)
         if changeActive:
             self.mutantwidget.changeActive(False)
