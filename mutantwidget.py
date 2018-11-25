@@ -15,32 +15,43 @@ __copyright__ = 'Copyright 2014, Werner Macho'
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
-from builtins import zip
-from builtins import range
+# from __future__ import print_function
+# from __future__ import absolute_import
+
 import fnmatch  # Import filtering for Layer names
 import datetime  # for dealing with Multi-temporal data
-from distutils.version import StrictVersion
-from .time_tracker import TimeTracker
-from .applyfilter import ApplyFilter
 import time
 import csv
 import operator
-from qgis.PyQt import QtCore, QtGui
-from qgis.PyQt.QtCore import QObject, QSettings, Qt, QSize
+
+from distutils.version import StrictVersion
+from .time_tracker import TimeTracker
+from .applyfilter import ApplyFilter
+from qgis.PyQt.QtCore import (
+    QObject,
+    QSettings,
+    Qt,
+    QSize,
+    QEvent
+)
 from qgis.PyQt.QtWidgets import (
+    QFileDialog,
+    QSizePolicy,
     QWidget,
+    QMenu,
     QApplication,
+    QActionGroup,
     QTableWidgetItem,
     QToolButton,
     QActionGroup,
-    QMenu,
     QAction,
     QLabel
 )
-from qgis.PyQt.QtGui import QBrush, QPen, QIcon
+from qgis.PyQt.QtGui import (
+    QBrush,
+    QPen,
+    QIcon
+)
 from qgis.core import (
     Qgis,
     QgsMapLayer,
@@ -53,14 +64,11 @@ from qgis.core import (
     QgsRasterBandStats,
     QgsRectangle
 )
-from qgis.gui import QgsMessageBar
-
 
 from .ui_mutant import Ui_Mutant as Ui_Widget
 import logging
 # change the level back to logging.WARNING(the default) before releasing
 logging.basicConfig(level=logging.DEBUG)
-
 
 
 # TODO: Get better debugging
@@ -80,7 +88,7 @@ try:
     import matplotlib.pyplot as plt
     import matplotlib.ticker as ticker
     import matplotlib.dates as dates
-    #from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
+    # from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
     from .cust.mpl_cust import MplSettings
     has_mpl = StrictVersion(matplotlib.__version__) >= StrictVersion('1.0.0')
@@ -98,6 +106,7 @@ try:
 
 except ImportError:
     has_pyqtgraph = False
+    pg = False
 
 
 class MutantWidget(QWidget, Ui_Widget):
@@ -235,8 +244,8 @@ class MutantWidget(QWidget, Ui_Widget):
             self.curve.attach(self.qwtPlot)
 
             # Size Policy ???
-            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,
-                                           QtGui.QSizePolicy.Expanding)
+            sizePolicy = QSizePolicy(QSizePolicy.Expanding,
+                                     QSizePolicy.Expanding)
             sizePolicy.setHorizontalStretch(0)
             sizePolicy.setVerticalStretch(0)
             sizePolicy.setHeightForWidth(self.qwtPlot.sizePolicy().hasHeightForWidth())
@@ -348,9 +357,6 @@ class MutantWidget(QWidget, Ui_Widget):
         if active:
             self.toggleMutant.setCheckState(Qt.Checked)
             self.canvas.layersChanged .connect(self.invalidatePlot)
-            #QObject.connect(self.canvas,
-            #                SIGNAL("layersChanged ()"),
-            #                self.catch_errors)
             if not self.plotOnMove.isChecked():
                 self.canvas.xyCoordinates .connect(self.printValue)
         else:
@@ -367,9 +373,9 @@ class MutantWidget(QWidget, Ui_Widget):
                     self.update_layers()
             else:
                 self.labelStatus.setText(self.tr(""))
-                #use this to clear plot when deactivated
-                #self.values=[]
-                #self.showValues()
+                # use this to clear plot when deactivated
+                # self.values=[]
+                # self.showValues()
 
     def activeRasterLayers(self, index=None):
         layers = []
@@ -377,18 +383,18 @@ class MutantWidget(QWidget, Ui_Widget):
 
         if not index:
             index = self.layerSelection.currentIndex()
-        if index == 0: # visible layers
+        if index == 0:  # visible layers
             allLayers = self.canvas.layers()
-        elif index == 1 or index == 3: # All layers | by selection string
+        elif index == 1 or index == 3:  # All layers | by selection string
             allLayers = [ltl.layer() for ltl in self.legend.findLayers()]
-        elif index == 2: # Manual selection
+        elif index == 2:  # Manual selection
             for layer in [ltl.layer() for ltl in self.legend.findLayers()]:
                 if layer.id() in self.layersSelected:
                     allLayers.append(layer)
 
         for layer in allLayers:
 
-            if index == 3: # by selection string
+            if index == 3:  # by selection string
                 # Check if the layer name matches our filter and skip it if it
                 # doesn't
                 if not self.name_matches_filter(layer.name()):
@@ -598,7 +604,7 @@ class MutantWidget(QWidget, Ui_Widget):
             self.printInTable(position)
 
     def export_values(self):
-        path = QtGui.QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
+        path = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
         if path != "":
             with open(str(path), 'wb') as stream:
                 writer = csv.writer(stream)
@@ -693,7 +699,7 @@ class MutantWidget(QWidget, Ui_Widget):
                     self.valueTable.item(irow, 2).setText(str(date))
                 else:
                     self.valueTable.item(irow, 2).setText(str(xval))
-            #else:
+            # else:
                 # self.valueTable.item(irow, 2).setText('')
 
             if value == 'no data' or value == 'out of extent':
@@ -967,17 +973,17 @@ class MutantWidget(QWidget, Ui_Widget):
         if self.tabWidget.currentIndex() != 2:
             return
 
-        if self.layerSelection.currentIndex() == 3: # by selection string
+        if self.layerSelection.currentIndex() == 3:  # by selection string
             self.selectionStringLineEdit.setEnabled(True)
         else:
             self.selectionStringLineEdit.setEnabled(False)
 
-        if self.layerSelection.currentIndex() == 0: # visible layers
+        if self.layerSelection.currentIndex() == 0:  # visible layers
             layers = self.activeRasterLayers(0)
-        elif self.layerSelection.currentIndex() == 3: # by selection string
+        elif self.layerSelection.currentIndex() == 3:  # by selection string
             layers = self.activeRasterLayers(3)
         else:
-            layers = self.activeRasterLayers(1) # All layers
+            layers = self.activeRasterLayers(1)  # All layers
 
         self.selectionTable.blockSignals(True)
         self.selectionTable.clearContents()
@@ -1061,8 +1067,7 @@ class MutantWidget(QWidget, Ui_Widget):
         layerBand = action.data()[1]
         j = action.data()[2]
         toggleAll = action.data()[3]
-        activeBands = self.layerBands[layer_id] if (layer_id in
-                                                   self.layerBands) else []
+        activeBands = self.layerBands[layer_id] if (layer_id in self.layerBands) else []
 
         # special actions All/None
         if layerBand == -1:
@@ -1074,7 +1079,7 @@ class MutantWidget(QWidget, Ui_Widget):
                         activeBands = []
                     # toggle all band# actions
                     group = action.parent()
-                    if group and not isinstance(group, QtGui.QActionGroup):
+                    if group and not isinstance(group, QActionGroup):
                         group = None
                     if group:
                         group.blockSignals(True)
@@ -1102,12 +1107,11 @@ class MutantWidget(QWidget, Ui_Widget):
     # event filter for band selection menu, do not close after toggling each
     # band
     def eventFilter(self, obj, event):
-        if event.type() in [QtCore.QEvent.MouseButtonRelease]:
-            if isinstance(obj, QtGui.QMenu):
+        if event.type() in [QEvent.MouseButtonRelease]:
+            if isinstance(obj, QMenu):
                 if obj.activeAction():
-                    if not obj.activeAction().menu():  # if the selected
-                    # action does not have a submenu eat the event,
-                    # but trigger the function
+                    if not obj.activeAction().menu():
+                        # if the selected action does not have a submenu eat the event, but trigger the function
                         obj.activeAction().trigger()
                         return True
         return super(MutantWidget, self).eventFilter(obj, event)
@@ -1123,4 +1127,3 @@ class MutantWidget(QWidget, Ui_Widget):
     def toolPressed(self, position):
         if self.shouldPrintValues() and self.plotOnMove.isChecked():
             self.printValue(self.canvas.getCoordinateTransform().toMapCoordinates(position))
-

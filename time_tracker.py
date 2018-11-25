@@ -14,7 +14,7 @@ copyright		: (C) 2008-2010 by G. Picard
 
 from builtins import object
 from qgis.PyQt.QtCore import QObject, Qt, QFileInfo
-from qgis.PyQt.QtGui import QPalette
+from qgis.PyQt.QtGui import QPalette, QColor
 from qgis.core import QgsProject, QgsMapLayer
 
 import datetime
@@ -29,7 +29,6 @@ except ImportError:
 
 
 class TimeTracker(object):
-
     def __init__(self, parent, canvas):
         self.layer_times = dict()
         self.parent = parent
@@ -106,10 +105,10 @@ class TimeTracker(object):
         # Loop through all raster layers in qgis and call
         # track_layer, populating the dictionary
 
-        if QgsMapLayerRegistry is None:
+        if QgsProject is None:
             return
 
-        reg = QgsMapLayerRegistry.instance()
+        reg = QgsProject.instance()
         for layer_id, layer in reg.mapLayers().items():
             try:
                 if layer.type() == QgsMapLayer.RasterLayer:

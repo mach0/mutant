@@ -14,9 +14,6 @@ copyright		: (C) 2008-2010 by G. Picard
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
-# activate pycharm debugging
-# import pydevd
-# pydevd.settrace('localhost', port=55555, stdoutToServer=True,stderrToServer=True, suspend=False)
 
 from qgis.PyQt.QtCore import (
     QObject,
@@ -33,7 +30,9 @@ from qgis.PyQt.QtGui import (
 
 from .mutantmap import MutantMap
 from .mutantwidget import MutantWidget
-
+# Initialize Qt resources from file resources.py, don't delete even if it
+# shows not used
+from . import resources_rc
 
 class Mutant(object):
     def __init__(self, iface):
@@ -42,7 +41,7 @@ class Mutant(object):
 
     def initGui(self):
         # add action to toolbar
-        self.action = QAction(QIcon(":/plugins/mutant/img/icon.png"),
+        self.action = QAction(QIcon(":/plugins/mutant/img/icon.svg"),
                               "Mutant",
                               self.iface.mainWindow())
         self.iface.addToolBarIcon(self.action)
