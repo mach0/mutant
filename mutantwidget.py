@@ -351,6 +351,7 @@ class MutantWidget(QWidget, Ui_Widget):
             QWidget.keyPressEvent(self, e)
 
     def changeActive(self, active, gui=True):
+        if self.isActive == active: return
         self.isActive = active
 
         if active:
