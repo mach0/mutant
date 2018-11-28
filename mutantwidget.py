@@ -140,8 +140,7 @@ class MutantWidget(QWidget, Ui_Widget):
         QWidget.__init__(self)
         self.setupUi(self)
         self.tabWidget.setEnabled(False)
-        self.plotOnMove.setChecked(QSettings().value(
-            'plugins/mutant/mouseClick', False, type=bool))
+        self.plotOnMove.setChecked(QSettings().value('plugins/mutant/mouseClick', False, type=bool))
 
         self.leYMin.setText(str(self.ymin))
         self.leYMax.setText(str(self.ymax))
