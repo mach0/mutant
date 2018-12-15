@@ -76,19 +76,18 @@ debug = 0
 
 has_qwt = True
 try:
-    from PyQt4.Qwt5 import QwtPlot, QwtPlotCurve, QwtScaleDiv, QwtSymbol
+    from PyQt5.Qwt import QwtPlot, QwtPlotCurve, QwtScaleDiv, QwtSymbol
 except ImportError:
     has_qwt = False
 
-# test if matplotlib >= 1.0
 has_mpl = True
+
 try:
     import matplotlib
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib.ticker as ticker
     import matplotlib.dates as dates
-    # from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
     from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
     from .cust.mpl_cust import MplSettings
     has_mpl = StrictVersion(matplotlib.__version__) >= StrictVersion('1.0.0')
@@ -96,6 +95,7 @@ except ImportError:
     has_mpl = False
 
 has_pyqtgraph = True
+
 try:
     import pyqtgraph as pg
     from .cust.pqg_cust import DateTimeViewBox, DateTimeAxis
@@ -132,7 +132,7 @@ class MutantWidget(QWidget, Ui_Widget):
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
 
-        #self.legend = self.iface.legendInterface()
+        # self.legend = self.iface.legendInterface()
         self.legend = QgsProject.instance().layerTreeRoot()
         self.logger = logging.getLogger('.'.join((__name__,
                                         self.__class__.__name__)))
