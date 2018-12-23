@@ -3,9 +3,6 @@ begin			: 2014/06/16
 copyright		: (c) 2014- by Werner Macho
 email			: werner.macho@gmail.com
 
-based on valuetool
-copyright		: (C) 2008-2010 by G. Picard
-
 .. note:: This program is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
      the Free Software Foundation; either version 2 of the License, or

@@ -15,8 +15,6 @@ __copyright__ = 'Copyright 2014, Werner Macho'
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
-# from __future__ import print_function
-# from __future__ import absolute_import
 
 import fnmatch  # Import filtering for Layer names
 import datetime  # for dealing with Multi-temporal data
@@ -28,7 +26,6 @@ from distutils.version import StrictVersion
 from .time_tracker import TimeTracker
 from .applyfilter import ApplyFilter
 from qgis.PyQt.QtCore import (
-    QObject,
     QSettings,
     Qt,
     QSize,
@@ -40,7 +37,6 @@ from qgis.PyQt.QtWidgets import (
     QWidget,
     QMenu,
     QApplication,
-    QActionGroup,
     QTableWidgetItem,
     QToolButton,
     QActionGroup,
@@ -351,7 +347,8 @@ class MutantWidget(QWidget, Ui_Widget):
             QWidget.keyPressEvent(self, e)
 
     def changeActive(self, active, gui=True):
-        if self.isActive == active: return
+        if self.isActive == active:
+            return
         self.isActive = active
 
         if active:
@@ -362,7 +359,8 @@ class MutantWidget(QWidget, Ui_Widget):
         else:
             self.toggleMutant.setCheckState(Qt.Unchecked)
             self.canvas.layersChanged .disconnect(self.invalidatePlot)
-            self.canvas.xyCoordinates .disconnect(self.printValue)
+            if self.plotOnMove.isChecked():
+                self.canvas.xyCoordinates .disconnect(self.printValue)
 
         if gui:
             self.tabWidget.setEnabled(active)
@@ -818,7 +816,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 qwtx, qwtydata = list(zip(*[x for x in zip(x_values, data_values) if x[1] is not None]))
             except ValueError:
                 return
-            self.curve.setData(list(range(1, len(qwtydata)+1)), qwtydata)
+            self.curve.setSamples(list(range(1, len(qwtydata)+1)), qwtydata)
             self.qwtPlot.replot()
             self.qwtPlot.setVisible(len(qwtydata) > 0)
 

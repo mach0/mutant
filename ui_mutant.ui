@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>346</width>
+    <width>382</width>
     <height>415</height>
    </rect>
   </property>
@@ -147,7 +147,16 @@
        <item row="0" column="0" colspan="2">
         <widget class="QWidget" name="graphControls" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -376,6 +385,9 @@ PyQtGraph (fast but lacking some features)</string>
          </property>
          <property name="text">
           <string>Plot values only when mouse is clicked</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
