@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mutant.ui'
 #
-# Created by: PyQt5 UI code generator 5.7
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Mutant(object):
     def setupUi(self, Mutant):
         Mutant.setObjectName("Mutant")
-        Mutant.resize(346, 415)
+        Mutant.resize(382, 415)
         self.gridLayout = QtWidgets.QGridLayout(Mutant)
         self.gridLayout.setObjectName("gridLayout")
         self.toggleMutant = QtWidgets.QCheckBox(Mutant)
@@ -27,12 +27,10 @@ class Ui_Mutant(object):
         self.tabTable = QtWidgets.QWidget()
         self.tabTable.setObjectName("tabTable")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.tabTable)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.widget = QtWidgets.QWidget(self.tabTable)
         self.widget.setObjectName("widget")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.widget)
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.cbxDigits = QtWidgets.QCheckBox(self.widget)
         self.cbxDigits.setObjectName("cbxDigits")
@@ -72,7 +70,6 @@ class Ui_Mutant(object):
         self.tabGraph = QtWidgets.QWidget()
         self.tabGraph.setObjectName("tabGraph")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.tabGraph)
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.graphControls = QtWidgets.QWidget(self.tabGraph)
         self.graphControls.setObjectName("graphControls")
@@ -132,7 +129,6 @@ class Ui_Mutant(object):
         self.tabOptions = QtWidgets.QWidget()
         self.tabOptions.setObjectName("tabOptions")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.tabOptions)
-        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.selectLayerGrid = QtWidgets.QGridLayout()
         self.selectLayerGrid.setObjectName("selectLayerGrid")
@@ -164,6 +160,7 @@ class Ui_Mutant(object):
         self.line.setObjectName("line")
         self.gridLayout_3.addWidget(self.line, 1, 0, 1, 1)
         self.plotOnMove = QtWidgets.QCheckBox(self.tabOptions)
+        self.plotOnMove.setChecked(True)
         self.plotOnMove.setObjectName("plotOnMove")
         self.gridLayout_3.addWidget(self.plotOnMove, 0, 0, 1, 1)
         self.line_2 = QtWidgets.QFrame(self.tabOptions)
@@ -210,7 +207,6 @@ class Ui_Mutant(object):
         self.tabMulti = QtWidgets.QWidget()
         self.tabMulti.setObjectName("tabMulti")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.tabMulti)
-        self.gridLayout_4.setContentsMargins(0, 0, 0, 0)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.enableMTAnalysesCheckBox = QtWidgets.QCheckBox(self.tabMulti)
         self.enableMTAnalysesCheckBox.setObjectName("enableMTAnalysesCheckBox")

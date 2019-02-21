@@ -34,6 +34,7 @@ from .mutantwidget import MutantWidget
 # shows not used
 from . import resources_rc
 
+
 class Mutant(object):
     def __init__(self, iface):
         self.iface = iface

@@ -483,13 +483,11 @@ class MutantWidget(QWidget, Ui_Widget):
             if position is None:
                 pos = QgsPoint(0, 0)
             # transform points if needed
-            elif not mapCanvasSrs == layer_srs and \
-                    self.iface.mapCanvas().hasCrsTransformEnabled():
+            elif not mapCanvasSrs == layer_srs:
                 srsTransform = QgsCoordinateTransform(mapCanvasSrs, layer_srs)
                 try:
                     pos = srsTransform.transform(position)
                 except QgsCsException as err:
-                    # ignore transformation errors
                     continue
 
             if True:

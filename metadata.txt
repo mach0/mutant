@@ -8,8 +8,9 @@ about=Display raster layer values at current mouse position ordered by time.
 description=Display values from loaded raster layers in a table or plot
     optionally ordered by time which can be extracted from the layername (or
     other sources).
+    Short manual available at the end of: http://unigis.sbg.ac.at/files/Mastertheses/Full/102723.pdf
 category=Raster
-version=3.0.1
+version=3.0.2
 author=Werner Macho
 email=werner.macho@gmail.com
 ; other authors include :
@@ -21,6 +22,7 @@ email=werner.macho@gmail.com
 
 ; optional metadata entries
 changelog=
+    3.0.2 : bugfix for CRS problem (workaround)
     3.0.1 : fix bugs for QGIS 3.x
     3.0.0 : first port to QGIS 3.0
     0.4.1 : Code cleanup
