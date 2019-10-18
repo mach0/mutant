@@ -84,6 +84,9 @@ class Ui_Mutant(object):
         self.yAutoCheckBox.setChecked(True)
         self.yAutoCheckBox.setObjectName("yAutoCheckBox")
         self.horizontalLayout_2.addWidget(self.yAutoCheckBox)
+
+
+
         self.minYLabel = QtWidgets.QLabel(self.graphControls)
         self.minYLabel.setEnabled(True)
         self.minYLabel.setObjectName("minYLabel")
@@ -100,6 +103,49 @@ class Ui_Mutant(object):
         self.leYMax.setEnabled(False)
         self.leYMax.setObjectName("leYMax")
         self.horizontalLayout_2.addWidget(self.leYMax)
+
+        self.perc_win_label = QtWidgets.QLabel(self.graphControls)
+        self.perc_win_label.setEnabled(True)
+        self.perc_win_label.setObjectName("perc_win_label")
+        self.horizontalLayout_2.addWidget(self.perc_win_label)
+
+        self.perc_win_val = QtWidgets.QLineEdit(self.graphControls)
+        self.perc_win_val.setEnabled(False)
+        self.perc_win_val.setObjectName("perc_win_val")
+        self.horizontalLayout_2.addWidget(self.perc_win_val)
+
+        self.perc_label= QtWidgets.QLabel(self.graphControls)
+        self.perc_label.setEnabled(True)
+        self.perc_label.setObjectName("perc_label")
+        self.horizontalLayout_2.addWidget(self.perc_label)
+
+        self.percentil = QtWidgets.QLineEdit(self.graphControls)
+        self.percentil.setEnabled(False)
+        self.percentil.setObjectName("percentil")
+        self.horizontalLayout_2.addWidget(self.percentil)
+
+        self.window_size_label = QtWidgets.QLabel(self.graphControls)
+        self.window_size_label.setEnabled(True)
+        self.window_size_label.setObjectName("window_size_label")
+        self.horizontalLayout_2.addWidget(self.window_size_label)
+        self.window_size = QtWidgets.QLineEdit(self.graphControls)
+        self.window_size.setEnabled(False)
+        self.window_size.setObjectName("window_size")
+        self.horizontalLayout_2.addWidget(self.window_size)
+
+        self.power_eq_label= QtWidgets.QLabel(self.graphControls)
+        self.power_eq_label.setEnabled(True)
+        self.power_eq_label.setObjectName("power_eq_label")
+        self.horizontalLayout_2.addWidget(self.power_eq_label)
+
+        self.power_eq = QtWidgets.QLineEdit(self.graphControls)
+        self.power_eq.setEnabled(False)
+        self.power_eq.setObjectName("powe_eq")
+        self.horizontalLayout_2.addWidget(self.power_eq)
+
+
+
+
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.gridLayout_2.addWidget(self.graphControls, 0, 0, 1, 2)
@@ -237,11 +283,12 @@ class Ui_Mutant(object):
         self.gridLayout_4.addWidget(self.extractionPriorityListWidget, 2, 0, 1, 3)
         self.cutFirst = QtWidgets.QSpinBox(self.tabMulti)
         self.cutFirst.setMaximum(999)
+        self.cutFirst.setProperty("value",9)
         self.cutFirst.setObjectName("cutFirst")
         self.gridLayout_4.addWidget(self.cutFirst, 3, 0, 1, 2)
         self.dateLength = QtWidgets.QSpinBox(self.tabMulti)
         self.dateLength.setMaximum(999)
-        self.dateLength.setProperty("value", 0)
+        self.dateLength.setProperty("value", 7)
         self.dateLength.setObjectName("dateLength")
         self.gridLayout_4.addWidget(self.dateLength, 4, 0, 1, 2)
         self.sampleLabel = QtWidgets.QLabel(self.tabMulti)
@@ -309,6 +356,14 @@ class Ui_Mutant(object):
         self.enableStatistics.setText(_translate("Mutant", "Stats"))
         self.yAutoCheckBox.setToolTip(_translate("Mutant", "Autozoom to min and max of all loaded values"))
         self.yAutoCheckBox.setText(_translate("Mutant", "Auto"))
+
+        self.perc_win_label.setText(_translate("Mutant", "Perc-Window"))
+        self.perc_label.setText(_translate("Mutant", "Perc-Val"))
+        self.window_size_label.setText(_translate("Mutant", "SAVG-Window"))
+        self.power_eq_label.setText(_translate("Mutant", "SAVG-Power"))
+        #self.window_size.setText(_translate("Mutant", "Window size"))
+        #self.power_eq.setText(_translate("Mutant", "Power equation"))
+
         self.minYLabel.setText(_translate("Mutant", "Y min"))
         self.maxYLabel.setText(_translate("Mutant", "Y max"))
         self.plotLibSelector.setToolTip(_translate("Mutant", "Select plotting toolkit\n"
@@ -379,7 +434,7 @@ class Ui_Mutant(object):
         self.dateLength.setPrefix(_translate("Mutant", "Datestring is "))
         self.sampleLabel.setText(_translate("Mutant", "Sample"))
         self.patternLabel.setText(_translate("Mutant", "Datepattern:"))
-        self.patternLineEdit.setText(_translate("Mutant", "%Y%j%H%M%S"))
+        self.patternLineEdit.setText(_translate("Mutant", "%Y%j"))
         self.writeMetaDataCheckBox.setText(_translate("Mutant", "Write time to metadata (XML)"))
         self.writeMetaPushButton.setText(_translate("Mutant", "Write Meta"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabMulti), _translate("Mutant", "Time"))
