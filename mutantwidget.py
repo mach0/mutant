@@ -878,7 +878,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 self.mpl_cust.mpl_value_settings(x_values, ymin, ymax)
 
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(xaxis, yaxis,window=self.window_s,polyorder=self.power,perc=self.perc,median=self.perc_win)
+                derived_x, derived_y = self.filter.smooth(xaxis, yaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window==self.perc_win)
                 self.mpl_subplot.plot_date(derived_x,
                                            derived_y,
                                            linestyle='-',
@@ -914,7 +914,7 @@ class MutantWidget(QWidget, Ui_Widget):
                                                    width=1,
                                                    style=style_normal))
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis,window=self.window_s,polyorder=self.power,perc=self.perc,median=self.perc_win)
+                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window==self.perc_win)
                 self.pqg_plot_widget.plot(derived_x,
                                           derived_y,
                                           name='filter',
