@@ -914,7 +914,7 @@ class MutantWidget(QWidget, Ui_Widget):
                                                    width=1,
                                                    style=style_normal))
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window==self.perc_win)
+                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window=self.perc_win)
                 self.pqg_plot_widget.plot(derived_x,
                                           derived_y,
                                           name='filter',
