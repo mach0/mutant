@@ -247,13 +247,13 @@ class MutantWidget(QWidget, Ui_Widget):
             self.qwtPlot = QwtPlot(self.stackedWidget)
             self.qwtPlot.setAutoFillBackground(False)
             self.qwtPlot.setObjectName("qwtPlot")
-            self.curve = QwtPlotCurve()
-            self.curve.setSymbol(
-                QwtSymbol(QwtSymbol.Ellipse,
-                          QBrush(Qt.white),
-                          QPen(Qt.red, 2),
-                          QSize(9, 9)))
-            self.curve.attach(self.qwtPlot)
+            #self.curve = QwtPlotCurve()
+            #self.curve.setSymbol(
+            #    QwtSymbol(QwtSymbol.Ellipse,
+            #              QBrush(Qt.white),
+            #              QPen(Qt.red, 2),
+            #              QSize(9, 9)))
+            #self.curve.attach(self.qwtPlot)
 
             # Size Policy ???
             sizePolicy = QSizePolicy(QSizePolicy.Expanding,
@@ -836,7 +836,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 qwtx, qwtydata = list(zip(*[x for x in zip(x_values, data_values) if x[1] is not None]))
             except ValueError:
                 return
-            self.curve.setSamples(list(range(1, len(qwtydata)+1)), qwtydata)
+            #self.curve.setSamples(list(range(1, len(qwtydata)+1)), qwtydata)
             self.qwtPlot.replot()
             self.qwtPlot.setVisible(len(qwtydata) > 0)
 
@@ -863,7 +863,7 @@ class MutantWidget(QWidget, Ui_Widget):
 
             self.mpl_subplot.plot_date(xaxis,
                                        yaxis,
-                                       linestyle='-',
+                                       #linestyle='-',
                                        xdate=self.mt_enabled,
                                        ydate=False,
                                        marker='o',
@@ -878,7 +878,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 self.mpl_cust.mpl_value_settings(x_values, ymin, ymax)
 
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(xaxis, yaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window==self.perc_win)
+                derived_x, derived_y = self.filter.smooth(xaxis, yaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window=self.perc_win)
                 self.mpl_subplot.plot_date(derived_x,
                                            derived_y,
                                            linestyle='-',
