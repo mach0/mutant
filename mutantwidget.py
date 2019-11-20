@@ -113,10 +113,11 @@ class MutantWidget(QWidget, Ui_Widget):
         self.haspqg = has_pyqtgraph
         self.layerMap = dict()
         self.statsChecked = False
-        self.ymin = 0
-        self.ymax = 365
+        self.ymin = 100
+        self.ymax = 200
         self.isActive = False
         self.mt_enabled = False
+
 
         # Statistics (>=1.9)
         self.statsSampleSize = 2500000
@@ -137,6 +138,22 @@ class MutantWidget(QWidget, Ui_Widget):
         self.setupUi(self)
         self.tabWidget.setEnabled(False)
         self.plotOnMove.setChecked(QSettings().value('plugins/mutant/mouseClick', False, type=bool))
+
+
+        self.window_s = 99
+        self.power = 3
+        self.perc_win = 25
+        self.perc = 75
+
+        self.window_size.setEnabled(True)
+        self.power_eq.setEnabled(True)
+        self.perc_win_val.setEnabled(True)
+        self.percentil.setEnabled(True)
+
+        self.window_size.setText(str(self.window_s))
+        self.power_eq.setText(str(self.power))
+        self.perc_win_val.setText(str(self.perc_win))
+        self.percentil.setText(str(self.perc))
 
         self.leYMin.setText(str(self.ymin))
         self.leYMax.setText(str(self.ymax))
@@ -230,13 +247,13 @@ class MutantWidget(QWidget, Ui_Widget):
             self.qwtPlot = QwtPlot(self.stackedWidget)
             self.qwtPlot.setAutoFillBackground(False)
             self.qwtPlot.setObjectName("qwtPlot")
-            self.curve = QwtPlotCurve()
-            self.curve.setSymbol(
-                QwtSymbol(QwtSymbol.Ellipse,
-                          QBrush(Qt.white),
-                          QPen(Qt.red, 2),
-                          QSize(9, 9)))
-            self.curve.attach(self.qwtPlot)
+            #self.curve = QwtPlotCurve()
+            #self.curve.setSymbol(
+            #    QwtSymbol(QwtSymbol.Ellipse,
+            #              QBrush(Qt.white),
+            #              QPen(Qt.red, 2),
+            #              QSize(9, 9)))
+            #self.curve.attach(self.qwtPlot)
 
             # Size Policy ???
             sizePolicy = QSizePolicy(QSizePolicy.Expanding,
@@ -600,9 +617,10 @@ class MutantWidget(QWidget, Ui_Widget):
             self.printInTable(position)
 
     def export_values(self):
-        path = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
+        #path = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
+        path = r'B:/VEGA/monitoramento_bayer/api_monitoramento/teste/TESTE.csv'
         if path != "":
-            with open(str(path), 'wb') as stream:
+            with open(path, 'wb') as stream:
                 writer = csv.writer(stream)
                 for row in range(self.valueTable.rowCount()):
                     rowdata = []
@@ -789,7 +807,11 @@ class MutantWidget(QWidget, Ui_Widget):
                     # there?
             if not data_values:
                 data_values = [0]
-
+        self.window_s = int(self.window_size.text())
+        self.power = int(self.power_eq.text())
+        self.perc_win = int(self.perc_win_val.text())
+        self.perc = int(self.percentil.text())
+        
         if self.yAutoCheckBox.isChecked():
             ymin = self.ymin
             ymax = self.ymax
@@ -814,7 +836,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 qwtx, qwtydata = list(zip(*[x for x in zip(x_values, data_values) if x[1] is not None]))
             except ValueError:
                 return
-            self.curve.setSamples(list(range(1, len(qwtydata)+1)), qwtydata)
+            #self.curve.setSamples(list(range(1, len(qwtydata)+1)), qwtydata)
             self.qwtPlot.replot()
             self.qwtPlot.setVisible(len(qwtydata) > 0)
 
@@ -841,7 +863,7 @@ class MutantWidget(QWidget, Ui_Widget):
 
             self.mpl_subplot.plot_date(xaxis,
                                        yaxis,
-                                       linestyle='-',
+                                       #linestyle='-',
                                        xdate=self.mt_enabled,
                                        ydate=False,
                                        marker='o',
@@ -856,7 +878,7 @@ class MutantWidget(QWidget, Ui_Widget):
                 self.mpl_cust.mpl_value_settings(x_values, ymin, ymax)
 
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(xaxis, yaxis)
+                derived_x, derived_y = self.filter.smooth(xaxis, yaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window=self.perc_win)
                 self.mpl_subplot.plot_date(derived_x,
                                            derived_y,
                                            linestyle='-',
@@ -892,7 +914,7 @@ class MutantWidget(QWidget, Ui_Widget):
                                                    width=1,
                                                    style=style_normal))
             if do_filter:
-                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis)
+                derived_x, derived_y = self.filter.smooth(pgxaxis, pgyaxis,window=self.window_s,polyorder=self.power,perc=self.perc,p_window=self.perc_win)
                 self.pqg_plot_widget.plot(derived_x,
                                           derived_y,
                                           name='filter',
