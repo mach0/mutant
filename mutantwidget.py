@@ -376,8 +376,10 @@ class MutantWidget(QWidget, Ui_Widget):
         else:
             self.toggleMutant.setCheckState(Qt.Unchecked)
             self.canvas.layersChanged .disconnect(self.invalidatePlot)
-            if self.plotOnMove.isChecked():
-                self.canvas.xyCoordinates .disconnect(self.printValue)
+            try:
+                self.canvas.xyCoordinates.disconnect(self.printValue)
+            except TypeError:
+                pass  # it was not connected so there is nothing to do here
 
         if gui:
             self.tabWidget.setEnabled(active)
