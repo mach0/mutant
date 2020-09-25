@@ -10,11 +10,11 @@ description=Display values from loaded raster layers in a table or plot
     other sources).
     Short manual available at the end of: http://unigis.sbg.ac.at/files/Mastertheses/Full/102723.pdf
 category=Raster
-version=3.0.2
+version=3.0.3
 author=Werner Macho
 email=werner.macho@gmail.com
 ; other authors include :
-; Vincent Schut,
+; Vincent Schut, zgyivi
 ; initial Version as Value Tool: Ghislain Picard,
 ; adoption of Value Tool for QGIS 2.0: Richard Duivenvoorde,
 ; Bug fixes and improvements: Ricardo Silva, Etienne Tourigny, Radim Blazek
@@ -22,6 +22,7 @@ email=werner.macho@gmail.com
 
 ; optional metadata entries
 changelog=
+    3.0.3 : bugfix disconnection of printValue (by zgyivi)
     3.0.2 : bugfix for CRS problem (workaround)
     3.0.1 : fix bugs for QGIS 3.x
     3.0.0 : first port to QGIS 3.0
