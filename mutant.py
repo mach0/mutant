@@ -18,6 +18,7 @@ __copyright__ = 'Copyright 2014, Werner Macho'
 from qgis.PyQt.QtCore import (
     QObject,
     QSettings,
+    QFileInfo,
     Qt
 )
 from qgis.PyQt.QtWidgets import (
@@ -42,9 +43,12 @@ class Mutant(object):
 
     def initGui(self):
         # add action to toolbar
-        self.action = QAction(QIcon(":/plugins/mutant/img/icon.svg"),
+        filePath = QFileInfo(__file__).absolutePath()
+        mutIcon = QIcon(filePath + '/img/icon.png')
+        self.action = QAction(mutIcon,
                               "Mutant",
                               self.iface.mainWindow())
+                              
         self.iface.addToolBarIcon(self.action)
         self.tool = MutantMap(self.canvas, self.action)
         self.saveTool = None
