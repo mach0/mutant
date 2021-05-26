@@ -31,9 +31,6 @@ from qgis.PyQt.QtGui import (
 
 from .mutantmap import MutantMap
 from .mutantwidget import MutantWidget
-# Initialize Qt resources from file resources.py, don't delete even if it
-# shows not used
-from . import resources_rc
 
 
 class Mutant(object):
@@ -44,7 +41,7 @@ class Mutant(object):
     def initGui(self):
         # add action to toolbar
         filePath = QFileInfo(__file__).absolutePath()
-        mutIcon = QIcon(filePath + '/img/icon.png')
+        mutIcon = QIcon(filePath + '/img/icon.svg')
         self.action = QAction(mutIcon,
                               "Mutant",
                               self.iface.mainWindow())

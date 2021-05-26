@@ -21,31 +21,6 @@ from qgis.PyQt.QtGui import QCursor, QPixmap
 
 from qgis.gui import QgsMapTool
 
-# cursor taken from QGIS qgscursors.cpp
-# these should be available in python api!
-identify_cursor = [
-    "16 16 3 1",
-    "# c None",
-    "a c #000000",
-    ". c #ffffff",
-    ".###########..##",
-    "...########.aa.#",
-    ".aa..######.aa.#",
-    "#.aaa..#####..##",
-    "#.aaaaa..##.aa.#",
-    "##.aaaaaa...aa.#",
-    "##.aaaaaa...aa.#",
-    "##.aaaaa.##.aa.#",
-    "###.aaaaa.#.aa.#",
-    "###.aa.aaa..aa.#",
-    "####..#..aa.aa.#",
-    "####.####.aa.a.#",
-    "##########.aa..#",
-    "###########.aa..",
-    "############.a.#",
-    "#############.##"
-]
-
 
 class MutantMap(QgsMapTool):
 
@@ -56,7 +31,6 @@ class MutantMap(QgsMapTool):
         QgsMapTool.__init__(self, canvas)
         self.canvas = canvas
         self.cursor = QCursor(Qt.CrossCursor)
-        # self.cursor = QCursor(QPixmap(identify_cursor), 1, 1)
         self.button = button
 
     def activate(self):

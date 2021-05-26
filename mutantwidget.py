@@ -29,7 +29,8 @@ from qgis.PyQt.QtCore import (
     QSettings,
     Qt,
     QSize,
-    QEvent
+    QEvent,
+    QFileInfo
 )
 from qgis.PyQt.QtWidgets import (
     QFileDialog,
@@ -1030,8 +1031,8 @@ class MutantWidget(QWidget, Ui_Widget):
             self.selectionTable.setItem(j, 1, item)
             activeBands = self.activeBandsForRaster(layer)
             button = QToolButton()
-            button.setIcon(QIcon(':/plugins/mutant/img/bands.jpg'))
-            # button.setIconSize(QtCore.QSize(400, 400))
+            bandIcon = QIcon(QFileInfo(__file__).absolutePath() + '/img/bands.jpg')
+            button.setIcon(bandIcon)
             button.setPopupMode(QToolButton.InstantPopup)
             group = QActionGroup(button)
             group.setExclusive(False)
