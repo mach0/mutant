@@ -16,7 +16,6 @@ __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
 from qgis.PyQt.QtCore import (
-    QObject,
     QSettings,
     QFileInfo,
     Qt
