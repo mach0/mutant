@@ -44,7 +44,7 @@ class Mutant(object):
         self.action = QAction(mutIcon,
                               "Mutant",
                               self.iface.mainWindow())
-                              
+
         self.iface.addToolBarIcon(self.action)
         self.tool = MutantMap(self.canvas, self.action)
         self.saveTool = None
