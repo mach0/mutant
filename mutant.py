@@ -15,6 +15,7 @@ __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
+
 from qgis.PyQt.QtCore import (
     QSettings,
     QFileInfo,
@@ -31,7 +32,6 @@ from qgis.PyQt.QtGui import (
 from .mutantmap import MutantMap
 from .mutantwidget import MutantWidget
 
-
 class Mutant(object):
     def __init__(self, iface):
         self.iface = iface
@@ -39,9 +39,9 @@ class Mutant(object):
 
     def initGui(self):
         # add action to toolbar
-        filePath = QFileInfo(__file__).absolutePath()
-        mutIcon = QIcon(filePath + '/img/icon.svg')
-        self.action = QAction(mutIcon,
+        file_path = QFileInfo(__file__).absolutePath()
+        mut_icon = QIcon(file_path + '/img/icon.svg')
+        self.action = QAction(mut_icon,
                               "Mutant",
                               self.iface.mainWindow())
 

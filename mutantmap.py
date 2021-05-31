@@ -15,7 +15,6 @@ __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
 
-# from PyQt4 import QtCore, QtGui
 from qgis.PyQt.QtCore import Qt, QPoint, pyqtSignal
 from qgis.PyQt.QtGui import QCursor, QPixmap
 

@@ -8,17 +8,16 @@ email			: werner.macho@gmail.com
      the Free Software Foundation; either version 2 of the License, or
      (at your option) any later version.
 """
-from builtins import object
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
-# import matplotlib
-# import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
-# import matplotlib.dates as dates
 
+
+from builtins import object
 import datetime
 
+import matplotlib.ticker as ticker
+# import matplotlib.dates as dates
 
 class MplSettings(object):
     def __init__(self, parent, canvas):
