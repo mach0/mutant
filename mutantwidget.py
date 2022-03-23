@@ -61,8 +61,14 @@ from qgis.core import (
     QgsRasterBandStats,
     QgsRectangle
 )
+import os
+from PyQt5.QtWidgets import QDockWidget
+from PyQt5.uic import loadUiType
+from PyQt5.QtCore import pyqtSignal
+FORM_CLASS, _ = loadUiType(os.path.join(os.path.dirname(__file__), 'ui_mutant.ui'))
 
-from .ui_mutant import Ui_Mutant as Ui_Widget
+#from .ui_mutant import Ui_Mutant as Ui_Widget
+
 import logging
 # change the level back to logging.WARNING(the default) before releasing
 logging.basicConfig(level=logging.DEBUG)
@@ -106,7 +112,7 @@ except ImportError:
     pg = False
 
 
-class MutantWidget(QWidget, Ui_Widget):
+class MutantWidget(QWidget, FORM_CLASS):
 
     def __init__(self, iface):
         self.hasqwt = has_qwt
@@ -146,15 +152,15 @@ class MutantWidget(QWidget, Ui_Widget):
         self.perc_win = 25
         self.perc = 75
 
-        self.window_size.setEnabled(True)
-        self.power_eq.setEnabled(True)
-        self.perc_win_val.setEnabled(True)
-        self.percentil.setEnabled(True)
+        #self.window_size.setEnabled(True)
+        #self.power_eq.setEnabled(True)
+        #self.perc_win_val.setEnabled(True)
+        #self.percentil.setEnabled(True)
 
-        self.window_size.setText(str(self.window_s))
-        self.power_eq.setText(str(self.power))
-        self.perc_win_val.setText(str(self.perc_win))
-        self.percentil.setText(str(self.perc))
+        #self.window_size.setText(str(self.window_s))
+        #self.power_eq.setText(str(self.power))
+        #self.perc_win_val.setText(str(self.perc_win))
+        #self.percentil.setText(str(self.perc))
 
         self.leYMin.setText(str(self.ymin))
         self.leYMax.setText(str(self.ymax))

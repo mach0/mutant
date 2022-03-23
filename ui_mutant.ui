@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>382</width>
-    <height>415</height>
+    <width>343</width>
+    <height>398</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1</width>
+    <height>1</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -24,26 +30,13 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QCheckBox" name="toggleFilter">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="toolTip">
-      <string>proof of concept - to be extended</string>
-     </property>
-     <property name="text">
-      <string>Enable Filtering</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0" colspan="3">
     <widget class="QTabWidget" name="tabWidget">
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="tabTable">
       <attribute name="title">
@@ -655,6 +648,19 @@ Drag &amp; Drop Fields</string>
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QCheckBox" name="toggleFilter">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="toolTip">
+      <string>proof of concept - to be extended</string>
+     </property>
+     <property name="text">
+      <string>Enable Filtering</string>
+     </property>
     </widget>
    </item>
    <item row="2" column="0">
