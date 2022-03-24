@@ -620,18 +620,16 @@ class MutantWidget(QWidget, Ui_Widget):
             self.printInTable(position)
 
     def export_values(self):
-        #path = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
-        path = r'B:/VEGA/monitoramento_bayer/api_monitoramento/teste/TESTE.csv'
+        path,_ = QFileDialog.getSaveFileName(self, 'Save File', '', 'CSV(*.csv)')
         if path != "":
-            with open(path, 'wb') as stream:
+            with open(path, 'w') as stream:
                 writer = csv.writer(stream)
                 for row in range(self.valueTable.rowCount()):
                     rowdata = []
                     for column in range(self.valueTable.columnCount()):
                         item = self.valueTable.item(row, column)
                         if item is not None:
-                            rowdata.append(
-                                str(item.text()).encode('utf8'))
+                            rowdata.append(item.text())
                         else:
                             rowdata.append('')
                     writer.writerow(rowdata)
