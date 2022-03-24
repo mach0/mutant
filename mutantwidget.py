@@ -21,6 +21,8 @@ import datetime  # for dealing with Multi-temporal data
 import time
 import csv
 import operator
+import os
+
 
 from distutils.version import StrictVersion
 from .time_tracker import TimeTracker
@@ -61,13 +63,9 @@ from qgis.core import (
     QgsRasterBandStats,
     QgsRectangle
 )
-import os
-from PyQt5.QtWidgets import QDockWidget
-from PyQt5.uic import loadUiType
-from PyQt5.QtCore import pyqtSignal
-FORM_CLASS, _ = loadUiType(os.path.join(os.path.dirname(__file__), 'ui_mutant.ui'))
 
-#from .ui_mutant import Ui_Mutant as Ui_Widget
+from PyQt5.uic import loadUiType
+FORM_CLASS, _ = loadUiType(os.path.join(os.path.dirname(__file__), 'ui_mutant.ui'))
 
 import logging
 # change the level back to logging.WARNING(the default) before releasing
@@ -816,10 +814,10 @@ class MutantWidget(QWidget, FORM_CLASS):
                     # there?
             if not data_values:
                 data_values = [0]
-        self.window_s = int(self.window_size.text())
-        self.power = int(self.power_eq.text())
-        self.perc_win = int(self.perc_win_val.text())
-        self.perc = int(self.percentil.text())
+        #self.window_s = int(self.window_size.text())
+        #self.power = int(self.power_eq.text())
+        #self.perc_win = int(self.perc_win_val.text())
+        #self.perc = int(self.percentil.text())
         
         if self.yAutoCheckBox.isChecked():
             ymin = self.ymin
