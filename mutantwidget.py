@@ -21,6 +21,8 @@ import datetime  # for dealing with Multi-temporal data
 import time
 import csv
 import operator
+import os
+
 
 from distutils.version import StrictVersion
 from .time_tracker import TimeTracker
@@ -62,7 +64,9 @@ from qgis.core import (
     QgsRectangle
 )
 
-from .ui_mutant import Ui_Mutant as Ui_Widget
+from PyQt5.uic import loadUiType
+FORM_CLASS, _ = loadUiType(os.path.join(os.path.dirname(__file__), 'ui_mutant.ui'))
+
 import logging
 # change the level back to logging.WARNING(the default) before releasing
 logging.basicConfig(level=logging.DEBUG)
@@ -106,7 +110,7 @@ except ImportError:
     pg = False
 
 
-class MutantWidget(QWidget, Ui_Widget):
+class MutantWidget(QWidget, FORM_CLASS):
 
     def __init__(self, iface):
         self.hasqwt = has_qwt
@@ -146,15 +150,15 @@ class MutantWidget(QWidget, Ui_Widget):
         self.perc_win = 25
         self.perc = 75
 
-        self.window_size.setEnabled(True)
-        self.power_eq.setEnabled(True)
-        self.perc_win_val.setEnabled(True)
-        self.percentil.setEnabled(True)
+        #self.window_size.setEnabled(True)
+        #self.power_eq.setEnabled(True)
+        #self.perc_win_val.setEnabled(True)
+        #self.percentil.setEnabled(True)
 
-        self.window_size.setText(str(self.window_s))
-        self.power_eq.setText(str(self.power))
-        self.perc_win_val.setText(str(self.perc_win))
-        self.percentil.setText(str(self.perc))
+        #self.window_size.setText(str(self.window_s))
+        #self.power_eq.setText(str(self.power))
+        #self.perc_win_val.setText(str(self.perc_win))
+        #self.percentil.setText(str(self.perc))
 
         self.leYMin.setText(str(self.ymin))
         self.leYMax.setText(str(self.ymax))
@@ -808,10 +812,10 @@ class MutantWidget(QWidget, Ui_Widget):
                     # there?
             if not data_values:
                 data_values = [0]
-        self.window_s = int(self.window_size.text())
-        self.power = int(self.power_eq.text())
-        self.perc_win = int(self.perc_win_val.text())
-        self.perc = int(self.percentil.text())
+        #self.window_s = int(self.window_size.text())
+        #self.power = int(self.power_eq.text())
+        #self.perc_win = int(self.perc_win_val.text())
+        #self.perc = int(self.percentil.text())
         
         if self.yAutoCheckBox.isChecked():
             ymin = self.ymin
