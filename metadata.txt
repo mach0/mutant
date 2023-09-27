@@ -8,7 +8,6 @@ about=Display raster layer values at current mouse position ordered by time.
 description=Display values from loaded raster layers in a table or plot
     optionally ordered by time which can be extracted from the layername (or
     other sources).
-    Short manual available at the end of: http://unigis.sbg.ac.at/files/Mastertheses/Full/102723.pdf
 category=Raster
 version=3.0.3
 author=Werner Macho
