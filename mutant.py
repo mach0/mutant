@@ -71,9 +71,23 @@ class Mutant(object):
         self.iface.addDockWidget(Qt.LeftDockWidgetArea, self.mutantdockwidget)
         # self.mutantwidget.show()
 
+        # re-activate on project load if active in the previous session
+        self.iface.projectRead.connect(self.autoActivate)
+
+    def autoActivate(self):
+        if QSettings().value('plugins/mutant/active', False, type=bool) \
+                and self.mutantwidget.activeRasterLayers():
+            self.activateTool()
+
     def unload(self):
+        QSettings().setValue('plugins/mutant/active',
+                             self.mutantwidget.isActive)
         QSettings().setValue('plugins/mutant/mouseClick',
                              self.mutantwidget.plotOnMove.isChecked())
+        try:
+            self.iface.projectRead.disconnect(self.autoActivate)
+        except TypeError:
+            pass
         self.mutantdockwidget.close()
         self.deactivateTool()
         # remove dockwidget from iface
