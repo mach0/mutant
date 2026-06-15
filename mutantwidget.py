@@ -558,6 +558,19 @@ class MutantWidget(QWidget, FORM_CLASS):
                     for key in ident.keys():
                         ident[key] = layer.dataProvider().noDataValue(key)
 
+                # pixel (row, col) of the point within this layer's array,
+                # using the GDAL/numpy convention: row 0 at the north edge,
+                # col 0 at the west edge. Computed in the layer's own CRS
+                # (pos), so it indexes arr[row, col] of the raster as read.
+                prov_extent = layer.dataProvider().extent()
+                if position is not None and prov_extent.contains(pos):
+                    pcol = int((pos.x() - prov_extent.xMinimum()) /
+                               layer.rasterUnitsPerPixelX())
+                    prow = int((prov_extent.yMaximum() - pos.y()) /
+                               layer.rasterUnitsPerPixelY())
+                else:
+                    prow, pcol = '', ''
+
                 # bands displayed depends on cbxBands (all / active / selected)
                 activeBands = self.activeBandsForRaster(layer)
 
@@ -590,11 +603,15 @@ class MutantWidget(QWidget, FORM_CLASS):
                                 # overwrite
                             tup = (layer_name_with_band,
                                    layer_time,
-                                   str(bandvalue))
+                                   str(bandvalue),
+                                   prow,
+                                   pcol)
                     else:
                         tup = (layer_name_with_band,
                                counter+1,
-                               str(bandvalue))
+                               str(bandvalue),
+                               prow,
+                               pcol)
 
                     self.values.append(tup)
 
@@ -707,7 +724,7 @@ class MutantWidget(QWidget, FORM_CLASS):
         posX = position.x()
         posY = position.y()
         irow = 0
-        for layername, xval, value in self.values:
+        for layername, xval, value, prow, pcol in self.values:
 
             if self.valueTable.item(irow, 0) is None:
                 # create the item
@@ -716,10 +733,20 @@ class MutantWidget(QWidget, FORM_CLASS):
                 self.valueTable.setItem(irow, 2, QTableWidgetItem())
                 self.valueTable.setItem(irow, 3, QTableWidgetItem())
                 self.valueTable.setItem(irow, 4, QTableWidgetItem())
+                self.valueTable.setItem(irow, 5, QTableWidgetItem())
+                self.valueTable.setItem(irow, 6, QTableWidgetItem())
 
             self.valueTable.item(irow, 0).setText(layername)
             self.valueTable.item(irow, 3).setText(str(posX))
             self.valueTable.item(irow, 4).setText(str(posY))
+
+            # row/col pixel index of the point in this layer's array
+            if prow == '':
+                self.valueTable.item(irow, 5).setText('')
+                self.valueTable.item(irow, 6).setText('')
+            else:
+                self.valueTable.item(irow, 5).setData(Qt.EditRole, prow)
+                self.valueTable.item(irow, 6).setData(Qt.EditRole, pcol)
 
             if self.mt_enabled:
                 graphlib = self.plotLibSelector.currentText()
@@ -811,7 +838,7 @@ class MutantWidget(QWidget, FORM_CLASS):
         do_interpolation = self.toggleInterpolation.isChecked()
 
         if self.hasqwt or self.hasmpl or self.haspqg:
-            for layername, xval, value in self.values:
+            for layername, xval, value, *_ in self.values:
                 x_values.append(xval)
                 try:
                     data_values.append(float(value))
