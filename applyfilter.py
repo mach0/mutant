@@ -10,8 +10,14 @@ email			: werner.macho@gmail.com
 """
 from builtins import range
 from builtins import object
-from scipy.signal import savgol_filter
 import numpy as np
+
+# scipy is imported lazily: the QGIS macOS bundle ships an x86_64-only
+# libgcc_s.1.1.dylib, so scipy.signal fails to dlopen on Apple Silicon.
+try:
+    from scipy.signal import savgol_filter
+except ImportError:
+    savgol_filter = None
 __author__ = 'werner.macho@gmail.com'
 __date__ = '2014/06/16'
 __copyright__ = 'Copyright 2014, Werner Macho'
@@ -25,6 +31,8 @@ class ApplyFilter(object):
 
     def smooth(self, orig_x, orig_y,window=9,polyorder=3,perc=75,p_window=5):
         try:
+            if savgol_filter is None:
+                raise ImportError("scipy not available")
             new_x = orig_x
             #new_y = medfilt(orig_y,p_window)
             new_y =[]

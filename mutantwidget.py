@@ -380,7 +380,10 @@ class MutantWidget(QWidget, FORM_CLASS):
                 self.canvas.xyCoordinates .connect(self.printValue)
         else:
             self.toggleMutant.setCheckState(Qt.Unchecked)
-            self.canvas.layersChanged .disconnect(self.invalidatePlot)
+            try:
+                self.canvas.layersChanged.disconnect(self.invalidatePlot)
+            except TypeError:
+                pass  # not connected (e.g. re-entrant deactivation from catch_errors)
             try:
                 self.canvas.xyCoordinates.disconnect(self.printValue)
             except TypeError:
@@ -497,6 +500,7 @@ class MutantWidget(QWidget, FORM_CLASS):
         # And keep them in a dict() with key=layer.id()
 
         counter = 0
+        skipped_no_date = 0
         for layer in rasterlayers:
             layer_name = str(layer.name())
             layer_srs = layer.crs()
@@ -575,6 +579,7 @@ class MutantWidget(QWidget, FORM_CLASS):
                         layer_time = self.tracker.get_time_for_layer(layer)
 
                         if layer_time is None:
+                            skipped_no_date += 1
                             continue
                         else:
                             # pyqtgraph enabled convert date to epoch
@@ -609,7 +614,12 @@ class MutantWidget(QWidget, FORM_CLASS):
         self.values.sort(key=operator.itemgetter(1))
 
         if len(self.values) == 0:
-            self.labelStatus.setText(self.tr("No valid bands to display"))
+            if skipped_no_date > 0:
+                self.labelStatus.setText(self.tr(
+                    "Multi-temporal analysis is on, but no layer names "
+                    "contain a parseable date (see Time tab)"))
+            else:
+                self.labelStatus.setText(self.tr("No valid bands to display"))
 
         self.showValues(position)
 
