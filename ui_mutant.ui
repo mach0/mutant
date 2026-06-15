@@ -128,6 +128,16 @@
            <string>Y Coordinate</string>
           </property>
          </column>
+         <column>
+          <property name="text">
+           <string>Row</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Col</string>
+          </property>
+         </column>
         </widget>
        </item>
       </layout>
